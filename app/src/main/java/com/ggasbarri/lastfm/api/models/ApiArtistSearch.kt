@@ -5,16 +5,16 @@ import com.squareup.moshi.JsonClass
 
 
 @JsonClass(generateAdapter = true)
-data class ArtistSearch(
-    val results: ArtistSearchResults,
+data class ApiArtistSearch(
+    val results: ApiArtistSearchResults,
 ) {
     fun getArtists() = results.artistsMatches.artists
 }
 
 @JsonClass(generateAdapter = true)
-data class ArtistSearchResults(
+data class ApiArtistSearchResults(
     @Json(name = "opensearch:Query")
-    val query: ArtistSearchQuery,
+    val query: ApiArtistSearchQuery,
     @Json(name = "opensearch:totalResults")
     val totalResults: Long,
     @Json(name = "opensearch:startIndex")
@@ -22,17 +22,17 @@ data class ArtistSearchResults(
     @Json(name = "opensearch:itemsPerPage")
     val itemsPerPage: Int,
     @Json(name = "artistmatches")
-    val artistsMatches: ArtistMatches
+    val artistsMatches: ApiArtistMatches
 )
 
 @JsonClass(generateAdapter = true)
-data class ArtistSearchQuery(
+data class ApiArtistSearchQuery(
     val role: String,
     val searchTerms: String,
     val startPage: Int,
 )
 
 @JsonClass(generateAdapter = true)
-data class ArtistMatches(
-    val artists: List<Artist>
+data class ApiArtistMatches(
+    val artists: List<ApiArtist>
 )

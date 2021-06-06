@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 
 @JsonClass(generateAdapter = true)
-data class Image(
+data class ApiImage(
     @Json(name = "size")
     val sizeStr: String = "small",
     @Json(name = "#text")
@@ -26,3 +26,6 @@ data class Image(
         }
     }
 }
+
+fun List<ApiImage>.getSmallImage(): ApiImage? = firstOrNull { it.getSize() == ApiImage.Size.SMALL }
+fun List<ApiImage>.getLargeImage(): ApiImage? = firstOrNull { it.getSize() == ApiImage.Size.LARGE }

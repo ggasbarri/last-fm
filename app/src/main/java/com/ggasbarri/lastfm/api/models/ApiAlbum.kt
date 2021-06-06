@@ -5,15 +5,12 @@ import com.squareup.moshi.JsonClass
 
 
 @JsonClass(generateAdapter = true)
-data class Artist(
+data class ApiAlbum(
     @Json(name = "mbid")
     val id: String,
     val name: String,
+    val artist: String,
     val url: String,
-    val image: List<Image>,
-    val listeners: Long,
+    val apiImage: List<ApiImage>,
     val streamable: Int,
-) {
-    val isStreamable: Boolean
-        get() = streamable == 1
-}
+)
