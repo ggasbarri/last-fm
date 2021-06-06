@@ -3,7 +3,8 @@ package com.ggasbarri.lastfm.injection
 import android.content.Context
 import androidx.room.Room
 import com.ggasbarri.lastfm.db.AppDatabase
-import com.ggasbarri.lastfm.db.ArtistsDao
+import com.ggasbarri.lastfm.db.dao.AlbumsDao
+import com.ggasbarri.lastfm.db.dao.ArtistsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,5 +28,10 @@ object DatabaseModule {
     @Provides
     fun provideArtistsDao(appDatabase: AppDatabase): ArtistsDao {
         return appDatabase.artistsDao()
+    }
+
+    @Provides
+    fun provideAlbumsDao(appDatabase: AppDatabase): AlbumsDao {
+        return appDatabase.albumsDao()
     }
 }

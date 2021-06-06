@@ -6,6 +6,7 @@ import com.ggasbarri.lastfm.injection.IoDispatcher
 import com.ggasbarri.lastfm.util.Response
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
@@ -21,7 +22,11 @@ class ArtistsRepository @Inject constructor(
     ): Flow<Response<ApiArtistSearch>> {
         return request {
             lastFmDatasource.searchArtists(artist, limit, page)
-        }.flowOn(dispatcher)
+        }
+            //.debounce(SEARCH_DEBOUNCE_MS)
+            .flowOn(dispatcher)
     }
 
 }
+
+private const val SEARCH_DEBOUNCE_MS = 2000L

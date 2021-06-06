@@ -1,19 +1,19 @@
-package com.ggasbarri.lastfm.db
+package com.ggasbarri.lastfm.db.dao
 
 import androidx.room.*
 import com.ggasbarri.lastfm.db.models.Artist
 
 @Dao
-interface  ArtistsDao {
+interface ArtistsDao {
     @Query("SELECT * FROM artists order by name ASC")
-    fun getAll(): List<Artist>?
+    fun getAll(): List<Artist>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(movies: List<Artist>)
+    fun insertAll(artist: List<Artist>)
 
     @Delete
-    fun delete(movie: Artist)
+    fun delete(artist: Artist)
 
     @Delete
-    fun deleteAll(movie: List<Artist>)
+    fun deleteAll(artist: List<Artist>)
 }
