@@ -1,6 +1,6 @@
 package com.ggasbarri.lastfm.util
 
-class Response<T>(
+class Resource<T>(
     val status: Status,
     val data: T?,
     val throwable: Throwable? = null
@@ -15,14 +15,14 @@ class Response<T>(
         get() = status == Status.ERROR
 
     companion object {
-        fun <T> success(data: T?): Response<T> =
-            Response(Status.SUCCESS, data)
+        fun <T> success(data: T?): Resource<T> =
+            Resource(Status.SUCCESS, data)
 
-        fun <T> loading(data: T? = null): Response<T> =
-            Response(Status.LOADING, data)
+        fun <T> loading(data: T? = null): Resource<T> =
+            Resource(Status.LOADING, data)
 
-        fun <T> error(throwable: Throwable?, data: T? = null): Response<T> =
-            Response(Status.ERROR, data, throwable)
+        fun <T> error(throwable: Throwable?, data: T? = null): Resource<T> =
+            Resource(Status.ERROR, data, throwable)
     }
 
     enum class Status {

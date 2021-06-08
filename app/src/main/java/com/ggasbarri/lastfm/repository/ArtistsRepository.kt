@@ -1,13 +1,16 @@
 package com.ggasbarri.lastfm.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.ggasbarri.lastfm.api.LastFmDatasource
-import com.ggasbarri.lastfm.api.models.ApiArtistSearch
+import com.ggasbarri.lastfm.api.mappings.toAppModel
+import com.ggasbarri.lastfm.api.paging.ArtistSearchPagingSourceFactory
+import com.ggasbarri.lastfm.db.models.Artist
 import com.ggasbarri.lastfm.injection.IoDispatcher
-import com.ggasbarri.lastfm.util.Response
+import com.ggasbarri.lastfm.util.Resource
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class ArtistsRepository @Inject constructor(
@@ -17,12 +20,25 @@ class ArtistsRepository @Inject constructor(
 
     suspend fun searchArtists(
         artist: String,
-        limit: Int = 30,
-        page: Int
-    ): Flow<Response<ApiArtistSearch>> {
-        return request {
-            lastFmDatasource.searchArtists(artist, limit, page)
-        }
+        limit: Int = 30
+    ): Flow<Resource<PagingData<Artist>>> {
+        return Pager(
+            config = PagingConfig(
+                initialLoadSize = 30,
+                pageSize = limit
+            ),
+            pagingSourceFactory = {
+                ArtistSearchPagingSourceFactory(lastFmDatasource, artist, limit)
+            }).flow
+            .transform {
+                emit(Resource.success(it))
+            }
+            .onStart {
+                emit(Resource.loading())
+            }
+            .catch { throwable ->
+                emit(Resource.error(throwable))
+            }
             //.debounce(SEARCH_DEBOUNCE_MS)
             .flowOn(dispatcher)
     }

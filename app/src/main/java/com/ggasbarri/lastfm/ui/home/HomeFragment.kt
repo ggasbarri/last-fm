@@ -25,4 +25,11 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.home_fragment, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.savedAlbums.observe(viewLifecycleOwner, {
+            it
+        })
+    }
 }

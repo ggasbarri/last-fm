@@ -1,15 +1,17 @@
 package com.ggasbarri.lastfm.db.dao
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.paging.PagingSource
+import androidx.room.*
 import com.ggasbarri.lastfm.db.models.Album
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface AlbumsDao {
     @Query("SELECT * FROM albums order by name ASC")
-    suspend fun getAll(): Flow<List<Album>>
+    fun getAll(): PagingSource<Int, Album>
+
+    @Query("SELECT * FROM albums WHERE id = :id")
+    suspend fun getAlbumById(id: String): Album
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(album: Album)
