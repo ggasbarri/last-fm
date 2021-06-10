@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.ggasbarri.lastfm.ui.home.HomeViewModel" />
+            type="com.ggasbarri.lastfm.ui.search.ArtistSearchViewModel" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +13,7 @@
         tools:context=".ui.home.HomeFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/savedAlbumsRv"
+            android:id="@+id/artistSearchRv"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

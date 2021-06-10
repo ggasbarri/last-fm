@@ -34,5 +34,6 @@ data class ApiArtistSearchQuery(
 
 @JsonClass(generateAdapter = true)
 data class ApiArtistMatches(
+    @Json(name = "artist")
     val artists: List<ApiArtist>
 )

@@ -10,4 +10,8 @@
         android:name="com.ggasbarri.lastfm.ui.home.HomeFragment"
         android:label="home_fragment"
         tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/artistSearchFragment"
+        android:name="com.ggasbarri.lastfm.ui.search.ArtistSearchFragment"
+        android:label="ArtistSearchFragment" />
 </navigation>

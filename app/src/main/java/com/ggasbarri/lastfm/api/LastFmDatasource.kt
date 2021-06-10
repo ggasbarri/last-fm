@@ -7,14 +7,14 @@ import retrofit2.http.Query
 
 interface LastFmDatasource {
 
-    @GET("/?method=${ApiMethods.ARTIST_SEARCH}")
+    @GET("?method=${ApiMethods.ARTIST_SEARCH}")
     suspend fun searchArtists(
         @Query("artist") artist: String,
         @Query("limit") limit: Int = 30,
         @Query("page") page: Int,
     ): ApiArtistSearch
 
-    @GET("/?method=${ApiMethods.ALBUM_GET}")
+    @GET("?method=${ApiMethods.ALBUM_GET}")
     suspend fun getAlbum(
         @Query("mbid") id: String,
     ): ApiAlbum

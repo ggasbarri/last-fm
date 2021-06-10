@@ -18,10 +18,10 @@ class ArtistsRepository @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseRepository() {
 
-    suspend fun searchArtists(
+    fun searchArtists(
         artist: String,
         limit: Int = 30
-    ): Flow<Resource<PagingData<Artist>>> {
+    ): Flow<PagingData<Artist>> {
         return Pager(
             config = PagingConfig(
                 initialLoadSize = 30,
@@ -30,15 +30,6 @@ class ArtistsRepository @Inject constructor(
             pagingSourceFactory = {
                 ArtistSearchPagingSourceFactory(lastFmDatasource, artist, limit)
             }).flow
-            .transform {
-                emit(Resource.success(it))
-            }
-            .onStart {
-                emit(Resource.loading())
-            }
-            .catch { throwable ->
-                emit(Resource.error(throwable))
-            }
             //.debounce(SEARCH_DEBOUNCE_MS)
             .flowOn(dispatcher)
     }

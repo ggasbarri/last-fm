@@ -34,12 +34,11 @@ class AlbumsRepository @Inject constructor(
         emit(albumsDao.insert(album))
     }.flowOn(dispatcher)
 
-    suspend fun getAlbum(id: String): Flow<Resource<Album>> {
+    suspend fun getSavedAlbum(id: String): Flow<Resource<Album>> {
         return requestWithCache(
             cache = { albumsDao.getAlbumById(id) }
         ) {
             lastFmDatasource.getAlbum(id).toAppModel()
         }.flowOn(dispatcher)
     }
-
 }

@@ -15,15 +15,15 @@ class ArtistSearchPagingSourceFactory(
 ) : PagingSource<Int, Artist>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Artist> {
-        val nextPage = params.key ?: 0
+        val position = params.key ?: 1
 
         return try {
-            val response = lastFmDatasource.searchArtists(artist, limit = limit, page = nextPage)
+            val response = lastFmDatasource.searchArtists(artist, limit = limit, page = position)
 
             LoadResult.Page(
                 data = response.getArtists().toAppModel(),
                 prevKey = null, // Only paging forward
-                nextKey = if (response.getArtists().size < limit) null else nextPage
+                nextKey = if (response.getArtists().size < limit) null else position + 1
             )
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
