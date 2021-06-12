@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/artistSearchFragment">
+
+    <fragment
+        android:id="@+id/savedAlbumsFragment"
+        android:name="com.ggasbarri.lastfm.ui.album.saved.SavedAlbumFragment"
+        android:label="saved_albums_fragment"
+        tools:layout="@layout/saved_album_fragment" />
+    <fragment
+        android:id="@+id/artistSearchFragment"
+        android:name="com.ggasbarri.lastfm.ui.search.ArtistSearchFragment"
+        android:label="ArtistSearchFragment"
+        tools:layout="@layout/artist_search_fragment" />
+</navigation>
