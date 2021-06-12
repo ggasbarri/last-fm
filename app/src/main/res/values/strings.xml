@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Last FM Exercise</string>
+
+    <!-- region Main -->
+    <string name="main_navigation_title_saved_albums">Albums</string>
+    <string name="main_navigation_title_search_artists">Artists</string>
+    <string name="main_navigation_title_info">Info</string>
+    <!-- endregion -->
+
 </resources>

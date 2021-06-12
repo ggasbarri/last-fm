@@ -3,16 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/artistSearchFragment">
+    app:startDestination="@id/savedAlbumsFragment">
 
     <fragment
         android:id="@+id/savedAlbumsFragment"
         android:name="com.ggasbarri.lastfm.ui.album.saved.SavedAlbumFragment"
         android:label="saved_albums_fragment"
         tools:layout="@layout/saved_album_fragment" />
+
     <fragment
         android:id="@+id/artistSearchFragment"
         android:name="com.ggasbarri.lastfm.ui.search.ArtistSearchFragment"
         android:label="ArtistSearchFragment"
         tools:layout="@layout/artist_search_fragment" />
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.ggasbarri.lastfm.ui.info.InfoFragment"
+        android:label="info_fragment"
+        tools:layout="@layout/info_fragment" />
 </navigation>

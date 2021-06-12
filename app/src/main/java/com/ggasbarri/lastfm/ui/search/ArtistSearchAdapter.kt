@@ -38,9 +38,9 @@ class SavedArtistViewHolder(private val binding: ItemArtistSearchResultBinding) 
 
 }
 
-class ArtistSearchResultDiffCallback() : DiffUtil.ItemCallback<Artist>() {
+class ArtistSearchResultDiffCallback : DiffUtil.ItemCallback<Artist>() {
     override fun areItemsTheSame(oldItem: Artist, newItem: Artist): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.remoteId == newItem.remoteId
     }
 
     override fun areContentsTheSame(oldItem: Artist, newItem: Artist): Boolean {
