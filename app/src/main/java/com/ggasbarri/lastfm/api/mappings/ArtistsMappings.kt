@@ -1,19 +1,17 @@
 package com.ggasbarri.lastfm.api.mappings
 
-import com.ggasbarri.lastfm.api.models.ApiArtist
-import com.ggasbarri.lastfm.api.models.getLargeImage
-import com.ggasbarri.lastfm.api.models.getSmallImage
+import com.ggasbarri.lastfm.api.models.ArtistSearchResponse
 import com.ggasbarri.lastfm.db.models.Artist
 
-fun ApiArtist.toAppModel(): Artist {
+fun ArtistSearchResponse.Results.ArtistMatches.Artist.toAppModel(): Artist {
     return Artist(
-        id = mbid,
+        remoteId = mbid,
         name = name,
         url = url,
-        smallImageUrl = images.getSmallImage()?.url,
-        largeImageUrl = images.getLargeImage()?.url,
-        totalListeners = listeners,
+        smallImageUrl = images.firstOrNull { it.size == "small" }?.url,
+        largeImageUrl = images.firstOrNull { it.size == "large" }?.url,
+        totalListeners = try { this.listeners.toLong() } catch (e: Throwable) { null },
     )
 }
 
-fun List<ApiArtist>.toAppModel() = map { it.toAppModel() }
+fun List<ArtistSearchResponse.Results.ArtistMatches.Artist>.toAppModel() = map { it.toAppModel() }

@@ -4,11 +4,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.ggasbarri.lastfm.api.LastFmDatasource
-import com.ggasbarri.lastfm.api.mappings.toAppModel
 import com.ggasbarri.lastfm.api.paging.ArtistSearchPagingSourceFactory
+import com.ggasbarri.lastfm.api.paging.ArtistTopAlbumsPagingSourceFactory
+import com.ggasbarri.lastfm.db.models.Album
 import com.ggasbarri.lastfm.db.models.Artist
 import com.ggasbarri.lastfm.injection.IoDispatcher
-import com.ggasbarri.lastfm.util.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -24,7 +24,7 @@ class ArtistsRepository @Inject constructor(
     ): Flow<PagingData<Artist>> {
         return Pager(
             config = PagingConfig(
-                initialLoadSize = 30,
+                initialLoadSize = limit,
                 pageSize = limit
             ),
             pagingSourceFactory = {
@@ -34,6 +34,20 @@ class ArtistsRepository @Inject constructor(
             .flowOn(dispatcher)
     }
 
+    fun getTopSavedAlbums(
+        artistRemoteId: String,
+        limit: Int = 30
+    ): Flow<PagingData<Album>> {
+        return Pager(
+            config = PagingConfig(
+                initialLoadSize = limit,
+                pageSize = limit
+            ),
+            pagingSourceFactory = {
+                ArtistTopAlbumsPagingSourceFactory(lastFmDatasource, artistRemoteId, limit)
+            }).flow
+            .flowOn(dispatcher)
+    }
 }
 
 private const val SEARCH_DEBOUNCE_MS = 2000L

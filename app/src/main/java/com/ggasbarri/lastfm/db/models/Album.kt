@@ -8,14 +8,15 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "albums")
 @Parcelize
 data class Album(
-    @PrimaryKey val id: String,
+    val remoteId: String,
     val name: String,
     val artist: String,
     val url: String,
     val smallImageUrl: String? = null,
     val largeImageUrl: String? = null,
-    val publishDateMs: Long?,
-    val shortDescription: String,
-    val longDescription: String,
-    val tags: List<String>
+    val publishDateMs: Long? = null,
+    val shortDescription: String? = null,
+    val longDescription: String? = null,
+    val tags: List<String>? = null,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
 ) : Parcelable

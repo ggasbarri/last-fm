@@ -18,7 +18,7 @@ class StringListTypeConverter {
     }
 
     @TypeConverter
-    fun stringListToString(stringList: List<String>): String {
+    fun stringListToString(stringList: List<String>?): String? {
         val type: Type = Types.newParameterizedType(
             List::class.java,
             String::class.java
@@ -27,7 +27,7 @@ class StringListTypeConverter {
     }
 
     @TypeConverter
-    fun stringListToString(string: String): List<String> {
+    fun stringListToString(string: String?): List<String>? {
         val type: Type = Types.newParameterizedType(
             List::class.java,
             String::class.java

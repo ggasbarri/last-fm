@@ -1,7 +1,8 @@
 package com.ggasbarri.lastfm.api
 
-import com.ggasbarri.lastfm.api.models.ApiAlbum
-import com.ggasbarri.lastfm.api.models.ApiArtistSearch
+import com.ggasbarri.lastfm.api.models.AlbumInfoResponse
+import com.ggasbarri.lastfm.api.models.ArtistSearchResponse
+import com.ggasbarri.lastfm.api.models.TopAlbumsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,12 +13,19 @@ interface LastFmDatasource {
         @Query("artist") artist: String,
         @Query("limit") limit: Int = 30,
         @Query("page") page: Int,
-    ): ApiArtistSearch
+    ): ArtistSearchResponse
 
-    @GET("?method=${ApiMethods.ALBUM_GET}")
+    @GET("?method=${ApiMethods.ALBUM_INFO}")
     suspend fun getAlbum(
         @Query("mbid") id: String,
-    ): ApiAlbum
+    ): AlbumInfoResponse
+
+    @GET("?method=${ApiMethods.ALBUM_INFO}")
+    suspend fun getTopAlbums(
+        @Query("mbid") artistId: String,
+        @Query("limit") limit: Int = 30,
+        @Query("page") page: Int,
+    ): TopAlbumsResponse
 }
 
 const val LAST_FM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"

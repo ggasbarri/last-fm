@@ -3,14 +3,14 @@
     <data>
         <variable
             name="viewModel"
-            type="com.ggasbarri.lastfm.ui.home.HomeViewModel" />
+            type="com.ggasbarri.lastfm.ui.album.saved.SavedAlbumViewModel" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+        tools:context=".ui.album.saved.SavedAlbumFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/savedAlbumsRv"

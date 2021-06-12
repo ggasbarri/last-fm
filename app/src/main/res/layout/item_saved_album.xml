@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.ggasbarri.lastfm.db.models.Album" />
+            type="com.ggasbarri.lastfm.db.models.AlbumWithTracks" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@{model.name}"
+            android:text="@{model.album.name}"
             android:textSize="18sp"
             android:textColor="#000"
             app:layout_constraintStart_toStartOf="parent"
