@@ -8,10 +8,10 @@
     <item
         android:id="@+id/artistSearchFragment"
         android:icon="@drawable/ic_artist_search"
-        android:title="@string/main_navigation_title_saved_albums" />
+        android:title="@string/main_navigation_title_search_artists" />
     <item
         android:id="@+id/infoFragment"
         android:icon="@drawable/ic_info"
-        android:title="@string/main_navigation_title_saved_albums" />
+        android:title="@string/main_navigation_title_info" />
 
 </menu>

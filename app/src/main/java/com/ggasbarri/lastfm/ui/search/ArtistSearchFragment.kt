@@ -1,10 +1,14 @@
 package com.ggasbarri.lastfm.ui.search
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.inputmethod.InputMethod
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +34,7 @@ class ArtistSearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding =
             ArtistSearchFragmentBinding.inflate(inflater, container, false).apply {
                 lifecycleOwner = viewLifecycleOwner
@@ -50,10 +54,20 @@ class ArtistSearchFragment : Fragment() {
         }
 
         viewModel.searchResults.observe(viewLifecycleOwner, { artists ->
-            lifecycleScope.launch { adapter.submitData(artists) }
+            lifecycleScope.launch { artists?.let { adapter.submitData(it) } }
         })
 
-        viewModel.searchArtist("Cher")
+        if (viewModel.artistQuery.isNullOrBlank()) {
 
+            // Show keyboard when entering the screen
+            binding.searchTextInputEditText.apply {
+                if (requestFocus()) {
+                    val inputMethodManager =
+                        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+                    inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+                }
+            }
+        }
     }
 }

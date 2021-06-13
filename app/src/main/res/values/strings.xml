@@ -11,4 +11,8 @@
     <string name="saved_albums_title">Your saved albums</string>
     <!-- endregion -->
 
+    <!-- region Search Artists -->
+    <string name="search_artists_edit_text_placeholder">Input an artist name</string>
+    <!-- endregion -->
+
 </resources>
