@@ -76,7 +76,7 @@ class ArtistSearchFragment : Fragment() {
             focusSearchEditText()
         }
 
-        // Setup Empty text
+        // Setup Empty text & ProgressBar
         handleLoadingSate()
 
         // Add separators
@@ -91,6 +91,7 @@ class ArtistSearchFragment : Fragment() {
     private fun handleLoadingSate() {
         lifecycleScope.launch {
             adapter.loadStateFlow.collectLatest { loadingState ->
+                binding.searchProgressBar.isVisible = loadingState.refresh is LoadState.Loading
                 binding.searchEmptyTv.isVisible = adapter.itemCount < 1
                 binding.searchEmptyTv.text =
                     if (!viewModel.artistQuery.isNullOrBlank() && loadingState.refresh !is LoadState.Loading)
