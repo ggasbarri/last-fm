@@ -15,6 +15,10 @@
     <string name="search_artists_edit_text_placeholder">Input an artist name</string>
     <string name="search_artists_start_text">We will show you the results here :)</string>
     <string name="search_artists_empty_text">No results for this artist :(</string>
+    <plurals name="search_artists_item_listeners">
+        <item quantity="one">%1$s listener</item>
+        <item quantity="other">%1$s listeners</item>
+    </plurals>
     <!-- endregion -->
 
 </resources>

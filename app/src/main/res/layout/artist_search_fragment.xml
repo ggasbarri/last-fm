@@ -26,8 +26,7 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Surface"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:contentInsetStart="0dp"
-                app:layout_scrollFlags="scroll|enterAlways|snap">
+                app:contentInsetStart="0dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/searchTextInputLayout"

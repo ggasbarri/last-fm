@@ -10,6 +10,6 @@ data class Artist(
     val url: String,
     val smallImageUrl: String? = null,
     val largeImageUrl: String? = null,
-    val totalListeners: Long? = null,
+    val totalListeners: Int? = null,
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
 )

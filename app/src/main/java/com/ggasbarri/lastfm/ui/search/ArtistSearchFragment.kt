@@ -12,8 +12,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.ArtistSearchFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,6 +63,14 @@ class ArtistSearchFragment : Fragment() {
             lifecycleScope.launch { artists?.let { adapter.submitData(it) } }
         })
 
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    binding.artistSearchRv.scrollToPosition(0)
+                }
+            }
+        })
+
         if (viewModel.artistQuery.isNullOrBlank()) {
             // Show keyboard when entering the screen
             focusSearchEditText()
@@ -80,13 +90,13 @@ class ArtistSearchFragment : Fragment() {
 
     private fun handleLoadingSate() {
         lifecycleScope.launch {
-            adapter.loadStateFlow.collectLatest {
+            adapter.loadStateFlow.collectLatest { loadingState ->
                 binding.searchEmptyTv.isVisible = adapter.itemCount < 1
                 binding.searchEmptyTv.text =
-                    if (viewModel.artistQuery.isNullOrBlank())
-                        getString(R.string.search_artists_start_text)
-                    else
+                    if (!viewModel.artistQuery.isNullOrBlank() && loadingState.refresh !is LoadState.Loading)
                         getString(R.string.search_artists_empty_text)
+                    else
+                        getString(R.string.search_artists_start_text)
             }
         }
     }

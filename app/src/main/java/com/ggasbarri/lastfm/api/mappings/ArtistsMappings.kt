@@ -10,7 +10,7 @@ fun ArtistSearchResponse.Results.ArtistMatches.Artist.toAppModel(): Artist {
         url = url,
         smallImageUrl = images.firstOrNull { it.size == "large" }?.url,
         largeImageUrl = images.firstOrNull { it.size == "extralarge" }?.url,
-        totalListeners = try { this.listeners.toLong() } catch (e: Throwable) { null },
+        totalListeners = try { this.listeners.toInt() } catch (e: Throwable) { null },
     )
 }
 
