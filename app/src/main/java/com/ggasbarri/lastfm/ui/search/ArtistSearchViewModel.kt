@@ -1,13 +1,11 @@
 package com.ggasbarri.lastfm.ui.search
 
 import androidx.lifecycle.*
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.ggasbarri.lastfm.repository.ArtistsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -36,7 +34,6 @@ class ArtistSearchViewModel @Inject constructor(
                     .cachedIn(viewModelScope)
                     .asLiveData()
             }
-
         }
 
     companion object {

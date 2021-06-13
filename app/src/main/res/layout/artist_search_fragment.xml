@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.ggasbarri.lastfm.ui.search.ArtistSearchViewModel" />
@@ -63,6 +65,16 @@
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_artist_search_result" />
+
+        <TextView
+            android:id="@+id/searchEmptyTv"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="24dp"
+            tools:text="@string/search_artists_empty_text"
+            android:textAlignment="center" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

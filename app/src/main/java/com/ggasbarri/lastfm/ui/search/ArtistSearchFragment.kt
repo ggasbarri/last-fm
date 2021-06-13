@@ -9,11 +9,15 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethod
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.ArtistSearchFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,15 +62,42 @@ class ArtistSearchFragment : Fragment() {
         })
 
         if (viewModel.artistQuery.isNullOrBlank()) {
-
             // Show keyboard when entering the screen
-            binding.searchTextInputEditText.apply {
-                if (requestFocus()) {
-                    val inputMethodManager =
-                        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            focusSearchEditText()
+        }
 
-                    inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
-                }
+        // Setup Empty text
+        handleLoadingSate()
+
+        // Add separators
+        binding.artistSearchRv.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            )
+        )
+    }
+
+    private fun handleLoadingSate() {
+        lifecycleScope.launch {
+            adapter.loadStateFlow.collectLatest {
+                binding.searchEmptyTv.isVisible = adapter.itemCount < 1
+                binding.searchEmptyTv.text =
+                    if (viewModel.artistQuery.isNullOrBlank())
+                        getString(R.string.search_artists_start_text)
+                    else
+                        getString(R.string.search_artists_empty_text)
+            }
+        }
+    }
+
+    private fun focusSearchEditText() {
+        binding.searchTextInputEditText.apply {
+            if (requestFocus()) {
+                val inputMethodManager =
+                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+                inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
             }
         }
     }

@@ -13,6 +13,8 @@
 
     <!-- region Search Artists -->
     <string name="search_artists_edit_text_placeholder">Input an artist name</string>
+    <string name="search_artists_start_text">We will show you the results here :)</string>
+    <string name="search_artists_empty_text">No results for this artist :(</string>
     <!-- endregion -->
 
 </resources>
