@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ggasbarri.lastfm.databinding.SavedAlbumFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +47,7 @@ class SavedAlbumFragment : Fragment() {
         binding.savedAlbumsRv.apply {
             adapter = this@SavedAlbumFragment.adapter
             layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                GridLayoutManager(requireContext(), 2)
         }
 
         viewModel.savedAlbums.observe(viewLifecycleOwner, { albums ->

@@ -21,4 +21,37 @@ class SavedAlbumViewModel @Inject constructor(
         .getSavedAlbums()
         .cachedIn(viewModelScope)
         .asLiveData()
+
+    // TODO: Remove
+    // Insert some albums programmatically
+    /*init {
+        viewModelScope.launch {
+            albumsRepository.saveAlbum(
+                AlbumWithTracks(
+                    Album(
+                        remoteId = "63b3a8ca-26f2-4e2b-b867-647a6ec2bebd",
+                        name = "Believe",
+                        artist = "Cher",
+                        url = "https://www.last.fm/music/Cher",
+                        smallImageUrl = "https://lastfm.freetls.fastly.net/i/u/174s/3b54885952161aaea4ce2965b2db1638.png",
+                        largeImageUrl = "https://lastfm.freetls.fastly.net/i/u/300x300/3b54885952161aaea4ce2965b2db1638.png",
+                    ),
+                    tracks = listOf(
+                        Track(
+                            name = "Believe",
+                            artist = "Cher",
+                            durationSeconds = 240,
+                            rank = 1
+                        ),
+                        Track(
+                            name = "The Power",
+                            artist = "Cher",
+                            durationSeconds = 236,
+                            rank = 2
+                        ),
+                    )
+                )
+            ).collectLatest {  }
+        }
+    }*/
 }
