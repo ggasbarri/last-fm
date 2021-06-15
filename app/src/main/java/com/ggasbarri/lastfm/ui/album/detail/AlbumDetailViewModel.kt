@@ -1,13 +1,11 @@
 package com.ggasbarri.lastfm.ui.album.detail
 
 import androidx.lifecycle.*
-import com.ggasbarri.lastfm.db.models.AlbumWithTracks
 import com.ggasbarri.lastfm.repository.AlbumsRepository
 import com.ggasbarri.lastfm.util.Resource
 import com.ggasbarri.lastfm.util.toSingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,7 +1,9 @@
 package com.ggasbarri.lastfm.ui.artist.search
 
 import androidx.lifecycle.*
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.ggasbarri.lastfm.db.models.Artist
 import com.ggasbarri.lastfm.repository.ArtistsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.debounce
@@ -23,15 +25,21 @@ class ArtistSearchViewModel @Inject constructor(
 
     val searchResults =
         savedStateHandle.getLiveData<String>(SAVED_STATE_ARTIST_QUERY).switchMap { artistQuery ->
-            if (artistQuery.isNullOrBlank()) {
-                flow { emit(null) }.asLiveData()
-            } else {
-                artistsRepository
-                    .searchArtists(artistQuery)
-                    .distinctUntilChanged()
-                    .debounce(SEARCH_RESULTS_DEBOUNCE_MS)
-                    .cachedIn(viewModelScope)
-                    .asLiveData()
+            when {
+                artistQuery == null -> {
+                    flow { emit(null) }.asLiveData()
+                }
+                artistQuery.isBlank() -> {
+                    flow { emit(PagingData.empty<Artist>()) }.asLiveData()
+                }
+                else -> {
+                    artistsRepository
+                        .searchArtists(artistQuery)
+                        .distinctUntilChanged()
+                        .debounce(SEARCH_RESULTS_DEBOUNCE_MS)
+                        .cachedIn(viewModelScope)
+                        .asLiveData()
+                }
             }
         }
 
