@@ -71,7 +71,7 @@
             android:layout_marginTop="240dp"
             android:indeterminate="true"
             android:paddingTop="4dp"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/topAlbumsEmptyTv"
@@ -81,7 +81,8 @@
             android:layout_marginTop="240dp"
             android:paddingTop="24dp"
             android:text="@string/artist_detail_top_albums_empty"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

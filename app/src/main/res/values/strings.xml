@@ -11,7 +11,7 @@
     <string name="saved_albums_title">Your saved albums</string>
     <!-- endregion -->
 
-    <!-- region Search Artists -->
+    <!-- region Artist Search -->
     <string name="search_artists_edit_text_placeholder">Input an artist name</string>
     <string name="search_artists_start_text">We will show you the results here :)</string>
     <string name="search_artists_empty_text">No results for this artist :(</string>
@@ -19,6 +19,7 @@
         <item quantity="one">%1$s listener</item>
         <item quantity="other">%1$s listeners</item>
     </plurals>
+    <string name="artist_search_artist_not_in_server_error">This artist cannot be found on the server</string>
     <!-- endregion -->
 
     <!-- region Artist Detail -->

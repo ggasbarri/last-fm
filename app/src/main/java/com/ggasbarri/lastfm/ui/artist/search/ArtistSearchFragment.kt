@@ -10,9 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +22,7 @@ import com.ggasbarri.lastfm.databinding.ItemArtistSearchResultBinding
 import com.ggasbarri.lastfm.db.models.Artist
 import com.ggasbarri.lastfm.util.ItemClickListener
 import com.ggasbarri.lastfm.util.MemoryCacheKey
+import com.ggasbarri.lastfm.util.snackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -84,13 +83,19 @@ class ArtistSearchFragment : Fragment() {
                         item: Artist,
                         position: Int
                     ) {
-                        findNavController().navigate(
-                            directions = ArtistSearchFragmentDirections
-                                .actionArtistSearchFragmentToArtistDetailFragment(
-                                    item,
-                                    MemoryCacheKey(binding.imageCacheKey ?: MemoryCache.Key(""))
-                                )
-                        )
+                        if (item.remoteId.isBlank()) {
+                            this@ArtistSearchFragment.binding.rootLayout.snackBar(
+                                R.string.artist_search_artist_not_in_server_error
+                            )
+                        } else {
+                            findNavController().navigate(
+                                directions = ArtistSearchFragmentDirections
+                                    .actionArtistSearchFragmentToArtistDetailFragment(
+                                        item,
+                                        MemoryCacheKey(binding.imageCacheKey ?: MemoryCache.Key(""))
+                                    )
+                            )
+                        }
                     }
                 }
 
