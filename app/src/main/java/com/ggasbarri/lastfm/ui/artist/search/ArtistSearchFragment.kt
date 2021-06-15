@@ -1,4 +1,4 @@
-package com.ggasbarri.lastfm.ui.search
+package com.ggasbarri.lastfm.ui.artist.search
 
 import android.content.Context
 import android.os.Bundle
@@ -6,18 +6,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.view.inputmethod.InputMethod
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.memory.MemoryCache
 import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.ArtistSearchFragmentBinding
+import com.ggasbarri.lastfm.databinding.ItemArtistSearchResultBinding
+import com.ggasbarri.lastfm.db.models.Artist
+import com.ggasbarri.lastfm.util.ItemClickListener
+import com.ggasbarri.lastfm.util.MemoryCacheKey
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -53,23 +59,7 @@ class ArtistSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.artistSearchRv.apply {
-            adapter = this@ArtistSearchFragment.adapter
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        }
-
-        viewModel.searchResults.observe(viewLifecycleOwner, { artists ->
-            lifecycleScope.launch { artists?.let { adapter.submitData(it) } }
-        })
-
-        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                if (positionStart == 0) {
-                    binding.artistSearchRv.scrollToPosition(0)
-                }
-            }
-        })
+        setupArtistsRecyclerView()
 
         if (viewModel.artistQuery.isNullOrBlank()) {
             // Show keyboard when entering the screen
@@ -78,6 +68,36 @@ class ArtistSearchFragment : Fragment() {
 
         // Setup Empty text & ProgressBar
         handleLoadingSate()
+    }
+
+    private fun setupArtistsRecyclerView() {
+
+        viewModel.searchResults.observe(viewLifecycleOwner, { artists ->
+            lifecycleScope.launch { artists?.let { adapter.submitData(it) } }
+        })
+
+        binding.artistSearchRv.apply {
+            this@ArtistSearchFragment.adapter.onItemClickListener =
+                object : ItemClickListener<ItemArtistSearchResultBinding, Artist> {
+                    override fun onItemClick(
+                        binding: ItemArtistSearchResultBinding,
+                        item: Artist,
+                        position: Int
+                    ) {
+                        findNavController().navigate(
+                            directions = ArtistSearchFragmentDirections
+                                .actionArtistSearchFragmentToArtistDetailFragment(
+                                    item,
+                                    MemoryCacheKey(binding.imageCacheKey ?: MemoryCache.Key(""))
+                                )
+                        )
+                    }
+                }
+
+            adapter = this@ArtistSearchFragment.adapter
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        }
 
         // Add separators
         binding.artistSearchRv.addItemDecoration(
@@ -86,6 +106,15 @@ class ArtistSearchFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        // Ensure first position on RecyclerView when query changes
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    binding.artistSearchRv.scrollToPosition(0)
+                }
+            }
+        })
     }
 
     private fun handleLoadingSate() {

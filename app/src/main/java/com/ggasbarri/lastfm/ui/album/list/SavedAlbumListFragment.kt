@@ -1,4 +1,4 @@
-package com.ggasbarri.lastfm.ui.album.saved
+package com.ggasbarri.lastfm.ui.album.list
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,20 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ggasbarri.lastfm.databinding.SavedAlbumFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SavedAlbumFragment : Fragment() {
+class SavedAlbumListFragment : Fragment() {
 
     companion object {
-        fun newInstance() = SavedAlbumFragment()
+        fun newInstance() = SavedAlbumListFragment()
     }
 
-    private val viewModel: SavedAlbumViewModel by viewModels()
+    private val listViewModel: SavedAlbumListViewModel by viewModels()
 
     @Inject
     lateinit var adapter: SavedAlbumAdapter
@@ -34,8 +33,8 @@ class SavedAlbumFragment : Fragment() {
     ): View {
         binding =
             SavedAlbumFragmentBinding.inflate(inflater, container, false).apply {
-                lifecycleOwner = this@SavedAlbumFragment.viewLifecycleOwner
-                viewModel = this@SavedAlbumFragment.viewModel
+                lifecycleOwner = this@SavedAlbumListFragment.viewLifecycleOwner
+                viewModel = this@SavedAlbumListFragment.listViewModel
             }
 
         return binding.root
@@ -45,12 +44,12 @@ class SavedAlbumFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.savedAlbumsRv.apply {
-            adapter = this@SavedAlbumFragment.adapter
+            adapter = this@SavedAlbumListFragment.adapter
             layoutManager =
                 GridLayoutManager(requireContext(), 2)
         }
 
-        viewModel.savedAlbums.observe(viewLifecycleOwner, { albums ->
+        listViewModel.savedAlbums.observe(viewLifecycleOwner, { albums ->
             lifecycleScope.launch { adapter.submitData(albums) }
         })
 

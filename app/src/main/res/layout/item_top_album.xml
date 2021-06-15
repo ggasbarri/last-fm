@@ -7,57 +7,63 @@
 
         <variable
             name="model"
-            type="com.ggasbarri.lastfm.db.models.AlbumWithTracks" />
+            type="com.ggasbarri.lastfm.db.models.Album" />
+
+        <variable
+            name="imageCacheKey"
+            type="coil.memory.MemoryCache.Key" />
     </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="16dp">
+        android:background="?attr/selectableItemBackground">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/albumIv"
+            android:id="@+id/artistIv"
             style="@style/Widget.LastFmExercise.ImageView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="16dp"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
+            tools:src="@tools:sample/backgrounds/scenic" />
 
         <TextView
-            android:id="@+id/albumTitleTv"
+            android:id="@+id/artistNameTv"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@{model.album.name}"
+            android:text="@{model.name}"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/playCountTv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/albumIv"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/artistIv"
+            app:layout_constraintTop_toTopOf="@+id/artistIv"
             tools:text="Believe" />
 
         <TextView
-            android:id="@+id/albumSubtitleTv"
+            android:id="@+id/playCountTv"
             style="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="16dp"
             android:alpha="0.7"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@{model.album.artist}"
+            android:text="@{@plurals/album_play_count(model.playCount, model.playCount)}"
+            app:layout_constraintBottom_toBottomOf="@+id/artistIv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/albumTitleTv"
-            tools:text="Taylor Swift" />
+            app:layout_constraintStart_toEndOf="@+id/artistIv"
+            app:layout_constraintTop_toBottomOf="@+id/artistNameTv"
+            tools:text="Played 1231435 times" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

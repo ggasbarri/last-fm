@@ -1,8 +1,7 @@
-package com.ggasbarri.lastfm.ui.album.saved
+package com.ggasbarri.lastfm.ui.album.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +11,7 @@ import coil.transform.RoundedCornersTransformation
 import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.ItemSavedAlbumBinding
 import com.ggasbarri.lastfm.db.models.AlbumWithTracks
+import com.ggasbarri.lastfm.util.ItemClickListener
 import javax.inject.Inject
 
 class SavedAlbumAdapter @Inject constructor(
@@ -20,6 +20,8 @@ class SavedAlbumAdapter @Inject constructor(
     SavedAlbumDiffCallback()
 ) {
 
+    var onItemClickListener: ItemClickListener<ItemSavedAlbumBinding, AlbumWithTracks>? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedAlbumViewHolder {
         return SavedAlbumViewHolder(
             ItemSavedAlbumBinding.inflate(
@@ -27,8 +29,13 @@ class SavedAlbumAdapter @Inject constructor(
                 parent,
                 false
             ), imageLoader = imageLoader
-        )
-
+        ).also {
+            it.itemView.setOnClickListener { _ ->
+                val item = getItem(it.bindingAdapterPosition)
+                if (item != null)
+                    onItemClickListener?.onItemClick(it.binding, item, it.bindingAdapterPosition)
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: SavedAlbumViewHolder, position: Int) {
@@ -37,7 +44,7 @@ class SavedAlbumAdapter @Inject constructor(
 }
 
 class SavedAlbumViewHolder(
-    private val binding: ItemSavedAlbumBinding,
+    val binding: ItemSavedAlbumBinding,
     private val imageLoader: ImageLoader
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -46,7 +53,10 @@ class SavedAlbumViewHolder(
             binding.model = albumWithTracks
 
             val imageRequest = ImageRequest.Builder(binding.root.context)
-                .data(albumWithTracks.album.smallImageUrl)
+                .data(
+                    if (albumWithTracks.album.smallImageUrl.isNullOrBlank()) R.drawable.ic_question_mark
+                    else albumWithTracks.album.smallImageUrl
+                )
                 .target(binding.albumIv)
                 .fallback(R.drawable.ic_question_mark)
                 .transformations(

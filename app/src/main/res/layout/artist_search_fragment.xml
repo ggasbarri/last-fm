@@ -7,14 +7,14 @@
 
         <variable
             name="viewModel"
-            type="com.ggasbarri.lastfm.ui.search.ArtistSearchViewModel" />
+            type="com.ggasbarri.lastfm.ui.artist.search.ArtistSearchViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.album.saved.SavedAlbumFragment">
+        tools:context=".ui.album.list.SavedAlbumListFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -76,16 +76,16 @@
             android:paddingTop="4dp"
             android:visibility="visible" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/searchEmptyTv"
-            style="@style/TextAppearance.AppCompat.Large"
+            style="@style/TextAppearance.MaterialComponents.Headline4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="24dp"
             android:textAlignment="center"
             tools:text="@string/search_artists_empty_text"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

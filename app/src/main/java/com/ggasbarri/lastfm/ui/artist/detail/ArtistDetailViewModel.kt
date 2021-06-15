@@ -1,43 +1,40 @@
-package com.ggasbarri.lastfm.ui.search
+package com.ggasbarri.lastfm.ui.artist.detail
 
 import androidx.lifecycle.*
 import androidx.paging.cachedIn
+import com.ggasbarri.lastfm.db.models.Artist
 import com.ggasbarri.lastfm.repository.ArtistsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 @HiltViewModel
-class ArtistSearchViewModel @Inject constructor(
+class ArtistDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val artistsRepository: ArtistsRepository,
 ) : ViewModel() {
 
-    var artistQuery: String?
-        get() = savedStateHandle[SAVED_STATE_ARTIST_QUERY]
+    var artist: Artist?
+        get() = savedStateHandle[SAVED_STATE_ARTIST]
         set(value) {
-            savedStateHandle[SAVED_STATE_ARTIST_QUERY] = value
+            savedStateHandle[SAVED_STATE_ARTIST] = value
         }
 
-    val searchResults =
-        savedStateHandle.getLiveData<String>(SAVED_STATE_ARTIST_QUERY).switchMap { artistQuery ->
-
-            if (artistQuery.isNullOrBlank()) {
+    val topAlbums =
+        savedStateHandle.getLiveData<Artist>(SAVED_STATE_ARTIST).switchMap { artist ->
+            if (artist == null) {
                 flow { emit(null) }.asLiveData()
             } else {
                 artistsRepository
-                    .searchArtists(artistQuery)
+                    .getTopSavedAlbums(artist.remoteId)
                     .distinctUntilChanged()
-                    .debounce(SEARCH_RESULTS_DEBOUNCE_MS)
                     .cachedIn(viewModelScope)
                     .asLiveData()
             }
         }
 
     companion object {
-        const val SAVED_STATE_ARTIST_QUERY = "artist_query"
-        private const val SEARCH_RESULTS_DEBOUNCE_MS = 400L
+        private const val SAVED_STATE_ARTIST = "artist"
     }
 }

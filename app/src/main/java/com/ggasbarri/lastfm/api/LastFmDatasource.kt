@@ -20,7 +20,7 @@ interface LastFmDatasource {
         @Query("mbid") id: String,
     ): AlbumInfoResponse
 
-    @GET("?method=${ApiMethods.ALBUM_INFO}")
+    @GET("?method=${ApiMethods.ALBUMS_BY_ARTIST}")
     suspend fun getTopAlbums(
         @Query("mbid") artistId: String,
         @Query("limit") limit: Int = 30,

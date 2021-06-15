@@ -21,4 +21,15 @@
     </plurals>
     <!-- endregion -->
 
+    <!-- region Artist Detail -->
+    <string name="artist_detail_top_albums_empty">No top albums for this artist</string>
+    <string name="artist_detail_album_not_in_server_error">This album cannot be found on the server</string>
+    <!-- endregion -->
+
+    <!-- region Album -->
+    <plurals name="album_play_count">
+        <item quantity="one">Played %1$s time</item>
+        <item quantity="other">Played %1$s times</item>
+    </plurals>
+    <!-- endregion -->
 </resources>

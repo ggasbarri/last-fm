@@ -14,6 +14,7 @@ fun AlbumInfoResponse.Album.toAppModel(): Album {
         smallImageUrl = images.firstOrNull { it.size == "large" }?.url,
         largeImageUrl = images.firstOrNull { it.size == "extralarge" }?.url,
         artist = artist,
+        playCount = playcount.toInt(),
         publishDateMs = formattedPublishDate(),
         shortDescription = wiki.summary,
         longDescription = wiki.content,
@@ -26,20 +27,7 @@ fun List<AlbumInfoResponse.Album>.toAppModel() = map { it.toAppModel() }
 
 fun AlbumInfoResponse.toAppModel(): AlbumWithTracks {
     return AlbumWithTracks(
-        album = with(album) {
-            Album(
-                remoteId = mbid,
-                name = name,
-                url = url,
-                smallImageUrl = images.firstOrNull { it.size == "large" }?.url,
-                largeImageUrl = images.firstOrNull { it.size == "extralarge" }?.url,
-                artist = artist,
-                publishDateMs = formattedPublishDate(),
-                shortDescription = wiki.summary,
-                longDescription = wiki.content,
-                tags = tagsObj.tags.map { it.name },
-            )
-        },
+        album = album.toAppModel(),
         tracks = album.tracksObj.tracks.toAppModel()
     )
 }
@@ -55,6 +43,7 @@ fun TopAlbumsResponse.TopAlbums.Album.toAppModel(): Album {
         smallImageUrl = images.firstOrNull { it.size == "large" }?.url,
         largeImageUrl = images.firstOrNull { it.size == "extralarge" }?.url,
         artist = artist.name,
+        playCount = this.playCount,
         publishDateMs = null,
         shortDescription = null,
         longDescription = null,

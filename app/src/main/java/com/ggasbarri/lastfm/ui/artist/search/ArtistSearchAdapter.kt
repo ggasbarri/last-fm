@@ -1,4 +1,4 @@
-package com.ggasbarri.lastfm.ui.search
+package com.ggasbarri.lastfm.ui.artist.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,11 +11,14 @@ import coil.transform.RoundedCornersTransformation
 import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.ItemArtistSearchResultBinding
 import com.ggasbarri.lastfm.db.models.Artist
+import com.ggasbarri.lastfm.util.ItemClickListener
 import javax.inject.Inject
 
 class ArtistSearchAdapter @Inject constructor(
     private val imageLoader: ImageLoader
 ) : PagingDataAdapter<Artist, SavedArtistViewHolder>(ArtistSearchResultDiffCallback()) {
+
+    var onItemClickListener: ItemClickListener<ItemArtistSearchResultBinding, Artist>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedArtistViewHolder {
         return SavedArtistViewHolder(
@@ -25,8 +28,13 @@ class ArtistSearchAdapter @Inject constructor(
                 false
             ),
             imageLoader = imageLoader
-        )
-
+        ).also {
+            it.itemView.setOnClickListener { _ ->
+                val item = getItem(it.bindingAdapterPosition)
+                if (item != null)
+                    onItemClickListener?.onItemClick(it.binding, item, it.bindingAdapterPosition)
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: SavedArtistViewHolder, position: Int) {
@@ -35,7 +43,7 @@ class ArtistSearchAdapter @Inject constructor(
 }
 
 class SavedArtistViewHolder(
-    private val binding: ItemArtistSearchResultBinding,
+    val binding: ItemArtistSearchResultBinding,
     private val imageLoader: ImageLoader
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -44,7 +52,10 @@ class SavedArtistViewHolder(
             binding.model = artist
 
             val imageRequest = ImageRequest.Builder(binding.root.context)
-                .data(artist.smallImageUrl)
+                .data(
+                    if (artist.smallImageUrl.isNullOrBlank()) R.drawable.ic_question_mark
+                    else artist.smallImageUrl
+                )
                 .target(binding.artistIv)
                 .fallback(R.drawable.ic_question_mark)
                 .transformations(
@@ -54,6 +65,9 @@ class SavedArtistViewHolder(
                         )
                     )
                 )
+                .listener { _, metadata ->
+                    binding.imageCacheKey = metadata.memoryCacheKey
+                }
                 .build()
 
             imageLoader.enqueue(imageRequest)

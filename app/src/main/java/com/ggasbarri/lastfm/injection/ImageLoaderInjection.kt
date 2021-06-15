@@ -19,6 +19,7 @@ object ImageLoaderInjection {
     fun provideImageLoader(@ApplicationContext applicationContext: Context): ImageLoader {
         return ImageLoader.Builder(applicationContext)
             .crossfade(true)
+            .allowHardware(false)
             .okHttpClient {
                 OkHttpClient.Builder()
                     .cache(CoilUtils.createDefaultCache(applicationContext))
