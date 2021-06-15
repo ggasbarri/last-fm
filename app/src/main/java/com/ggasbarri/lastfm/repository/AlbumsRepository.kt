@@ -34,7 +34,7 @@ class AlbumsRepository @Inject constructor(
         }).flow.flowOn(dispatcher)
 
 
-    suspend fun saveAlbum(albumWithTracks: AlbumWithTracks) = flow {
+    fun saveAlbum(albumWithTracks: AlbumWithTracks) = flow {
 
         val albumId = albumsDao.insert(albumWithTracks.album)
 
@@ -48,7 +48,7 @@ class AlbumsRepository @Inject constructor(
     }.flowOn(dispatcher)
 
 
-    suspend fun getAlbum(remoteId: String): Flow<Resource<AlbumWithTracks>> {
+    fun getAlbum(remoteId: String): Flow<Resource<AlbumWithTracks>> {
         return requestWithCache(
             cache = {
                 albumWithTracksDao.getAlbumWithTracksByRemoteId(remoteId)

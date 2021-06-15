@@ -1,13 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.album.detail.AlbumDetailFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <data>
+        <import type="com.ggasbarri.lastfm.ui.album.detail.AlbumDetailConverters"/>
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.ggasbarri.lastfm.ui.album.detail.AlbumDetailViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:fitsSystemWindows="true"
+        tools:context=".ui.album.detail.AlbumDetailFragment">
 
-</FrameLayout>
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:fitsSystemWindows="true"
+            app:liftOnScroll="true">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:toolbarId="@+id/toolbar">
+
+                <ImageView
+                    android:id="@+id/albumDetailIv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"
+                    tools:src="@tools:sample/avatars" />
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="@drawable/ic_arrow_back"
+                    app:title="@{viewModel.album.data.name}"
+                    app:titleCentered="true"
+                    tools:title="Cher" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.album.isSuccessful ? View.VISIBLE : View.GONE, default=visible}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="@{AlbumDetailConverters.shortDescriptionToHtml(viewModel.album.data.shortDescription)}"
+                    tools:text="Believe is the twenty-third studio album by American  singer-actress Cher, released on November 10, 1998 by Warner Bros. Records. The RIAA certified it Quadruple Platinum on December 23, 1999, recognizing four million shipments in the United States; Worldwide, the album has sold more than 20 million copies, making it the biggest-selling album of her career." />
+
+                <View style="@style/Divider" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tracksRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_top_album" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tracksEmptyTv"
+                    style="@style/TextAppearance.MaterialComponents.Headline4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:paddingTop="24dp"
+                    android:text="@string/album_detail_no_tracks"
+                    android:textAlignment="center"
+                    android:visibility="@{!viewModel.album.isLoading &amp;&amp; viewModel.tracks.data.size() == 0 ? View.VISIBLE : View.GONE, default=gone}" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar"
+            style="@style/Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="240dp"
+            android:indeterminate="true"
+            android:paddingTop="4dp"
+            android:visibility="@{viewModel.album.loading ? View.VISIBLE : View.GONE, default=gone}" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/albumErrorTv"
+            style="@style/TextAppearance.MaterialComponents.Headline4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="240dp"
+            android:paddingTop="24dp"
+            android:text="@string/album_detail_error"
+            android:textAlignment="center"
+            android:visibility="@{viewModel.album.hasError ? View.VISIBLE : View.GONE, default=gone}" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

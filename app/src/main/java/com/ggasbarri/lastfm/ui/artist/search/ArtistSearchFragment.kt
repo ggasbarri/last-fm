@@ -102,15 +102,15 @@ class ArtistSearchFragment : Fragment() {
             adapter = this@ArtistSearchFragment.adapter
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        }
 
-        // Add separators
-        binding.artistSearchRv.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
+            // Add separators
+            addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
             )
-        )
+        }
 
         // Ensure first position on RecyclerView when query changes
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {

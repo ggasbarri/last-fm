@@ -8,6 +8,10 @@
         <variable
             name="model"
             type="com.ggasbarri.lastfm.db.models.AlbumWithTracks" />
+
+        <variable
+            name="memoryCacheKey"
+            type="com.ggasbarri.lastfm.util.MemoryCacheKey" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

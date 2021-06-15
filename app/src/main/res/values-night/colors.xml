@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- region Color Filter -->
+    <color name="image_color_filter">#66000000</color>
+    <!-- endregion -->
 </resources>

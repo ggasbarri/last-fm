@@ -6,12 +6,14 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
+import coil.memory.MemoryCache
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.ItemSavedAlbumBinding
 import com.ggasbarri.lastfm.db.models.AlbumWithTracks
 import com.ggasbarri.lastfm.util.ItemClickListener
+import com.ggasbarri.lastfm.util.MemoryCacheKey
 import javax.inject.Inject
 
 class SavedAlbumAdapter @Inject constructor(
@@ -66,6 +68,10 @@ class SavedAlbumViewHolder(
                         )
                     )
                 )
+                .listener { _, metadata ->
+                    binding.memoryCacheKey =
+                        MemoryCacheKey(metadata.memoryCacheKey ?: MemoryCache.Key(""))
+                }
                 .build()
 
             imageLoader.enqueue(imageRequest)

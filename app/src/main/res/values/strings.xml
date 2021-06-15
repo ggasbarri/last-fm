@@ -7,10 +7,6 @@
     <string name="main_navigation_title_info">Info</string>
     <!-- endregion -->
 
-    <!-- region Saved Albums -->
-    <string name="saved_albums_title">Your saved albums</string>
-    <!-- endregion -->
-
     <!-- region Artist Search -->
     <string name="search_artists_edit_text_placeholder">Input an artist name</string>
     <string name="search_artists_start_text">We will show you the results here :)</string>
@@ -27,10 +23,27 @@
     <string name="artist_detail_album_not_in_server_error">This album cannot be found on the server</string>
     <!-- endregion -->
 
-    <!-- region Album -->
-    <plurals name="album_play_count">
+    <!-- region Saved Albums -->
+    <string name="saved_albums_title">Your saved albums</string>
+    <!-- endregion -->
+
+    <!-- region Album Item -->
+    <plurals name="album_item_play_count">
         <item quantity="one">Played %1$s time</item>
         <item quantity="other">Played %1$s times</item>
     </plurals>
     <!-- endregion -->
+
+    <!-- region Album Detail -->
+    <string name="album_detail_no_tracks">This album has no tracks</string>
+    <string name="album_detail_error">This album cannot be found on the server</string>
+    <!-- endregion -->
+
+    <!-- region Track -->
+    <plurals name="track_seconds">
+        <item quantity="one">%1$s second</item>
+        <item quantity="other">%1$s seconds</item>
+    </plurals>
+    <!-- endregion -->
+
 </resources>

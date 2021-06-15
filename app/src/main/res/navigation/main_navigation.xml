@@ -52,5 +52,8 @@
         <argument
             android:name="remoteId"
             app:argType="string" />
+        <argument
+            android:name="memoryCacheKey"
+            app:argType="com.ggasbarri.lastfm.util.MemoryCacheKey" />
     </fragment>
 </navigation>

@@ -70,13 +70,13 @@ class ArtistDetailFragment : Fragment() {
         val parameters by navArgs<ArtistDetailFragmentArgs>()
         viewModel.artist = parameters.artist
 
-        setupTopAlbumsRecyclerView()
-
-        loadArtistImage(parameters)
-
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        setupTopAlbumsRecyclerView()
+
+        loadArtistImage(parameters)
 
         // Setup Empty text & ProgressBar
         handleLoadingSate()
@@ -123,7 +123,10 @@ class ArtistDetailFragment : Fragment() {
                         } else {
                             findNavController().navigate(
                                 directions = ArtistDetailFragmentDirections.actionArtistDetailFragmentToAlbumDetailFragment(
-                                    item.remoteId
+                                    item.remoteId,
+                                    binding.memoryCacheKey ?: MemoryCacheKey(
+                                        MemoryCache.Key("")
+                                    )
                                 )
                             )
                         }

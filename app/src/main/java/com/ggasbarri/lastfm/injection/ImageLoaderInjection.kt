@@ -20,11 +20,6 @@ object ImageLoaderInjection {
         return ImageLoader.Builder(applicationContext)
             .crossfade(true)
             .allowHardware(false)
-            .okHttpClient {
-                OkHttpClient.Builder()
-                    .cache(CoilUtils.createDefaultCache(applicationContext))
-                    .build()
-            }
             .build()
     }
 }
