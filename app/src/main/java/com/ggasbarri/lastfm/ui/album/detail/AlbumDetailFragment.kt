@@ -6,8 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPresenter
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,6 +22,7 @@ import com.commit451.coiltransformations.ColorFilterTransformation
 import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.AlbumDetailFragmentBinding
 import com.ggasbarri.lastfm.util.MemoryCacheKey
+import com.ggasbarri.lastfm.util.snackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,6 +36,7 @@ class AlbumDetailFragment : Fragment() {
 
     @Inject
     lateinit var adapter: AlbumTracksAdapter
+
     @Inject
     lateinit var imageLoader: ImageLoader
 
@@ -59,13 +64,58 @@ class AlbumDetailFragment : Fragment() {
         val parameters by navArgs<AlbumDetailFragmentArgs>()
         viewModel.albumRemoteId = parameters.remoteId
 
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
+        setupToolbar()
 
         setupTracksRecyclerView()
 
         loadAlbumImage(parameters.memoryCacheKey)
+    }
+
+    private fun setupToolbar() {
+
+        binding.toolbar.menu.setGroupVisible(R.id.menuSaveGroup, false)
+        binding.toolbar.menu.setGroupVisible(R.id.menuDeleteGroup, false)
+
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menuSave -> {
+                    viewModel.saveAlbum().observe(viewLifecycleOwner, {
+                        if (it.isSuccessful)
+                            binding.rootLayout.snackBar(
+                                R.string.album_detail_save_success
+                            )
+                        else if (it.hasError)
+                            binding.rootLayout.snackBar(
+                                R.string.album_detail_save_error
+                            )
+                    })
+                    true
+                }
+                R.id.menuDelete -> {
+                    viewModel.deleteAlbum().observe(viewLifecycleOwner, {
+                        if (it.isSuccessful)
+                            binding.rootLayout.snackBar(
+                                R.string.album_detail_delete_success
+                            )
+                        else if (it.hasError)
+                            binding.rootLayout.snackBar(
+                                R.string.album_detail_delete_error
+                            )
+                    })
+                    true
+                }
+                else -> false
+            }
+        }
+
+        viewModel.isSavedLocally.observe(viewLifecycleOwner, Observer { isSavedLocally ->
+            binding.toolbar.menu.setGroupVisible(R.id.menuSaveGroup, !isSavedLocally)
+            binding.toolbar.menu.setGroupVisible(R.id.menuDeleteGroup, isSavedLocally)
+        })
     }
 
 

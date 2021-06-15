@@ -12,6 +12,7 @@ import com.ggasbarri.lastfm.injection.IoDispatcher
 import com.ggasbarri.lastfm.util.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -44,17 +45,23 @@ class AlbumsRepository @Inject constructor(
         }
 
         tracksDao.insertAll(tracksWithId)
-        emit(Unit)
+        emit(albumId)
+    }.flowOn(dispatcher)
+
+    fun deleteAlbum(albumWithTracks: AlbumWithTracks) = flow {
+        tracksDao.deleteAll(albumWithTracks.tracks)
+        albumsDao.delete(albumWithTracks.album)
+        emit(albumWithTracks.album.id)
     }.flowOn(dispatcher)
 
 
     fun getAlbum(remoteId: String): Flow<Resource<AlbumWithTracks>> {
         return requestWithCache(
-            cache = {
-                albumWithTracksDao.getAlbumWithTracksByRemoteId(remoteId)
+            cacheFlow = albumWithTracksDao.getAlbumWithTracksByRemoteId(remoteId),
+            requestFlow = request { lastFmDatasource.getAlbum(remoteId).toAppModel() },
+            overrideResponseWithCache = { cachedData, responseData ->
+                responseData?.copy(album = responseData.album.copy(id = cachedData.album.id))
             }
-        ) {
-            lastFmDatasource.getAlbum(remoteId).toAppModel()
-        }.flowOn(dispatcher)
+        ).flowOn(dispatcher)
     }
 }

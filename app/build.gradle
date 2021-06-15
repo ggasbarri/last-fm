@@ -93,4 +93,7 @@ dependencies {
     // Image Loading
     implementation "io.coil-kt:coil-base:1.2.2"
     implementation "com.github.Commit451.coil-transformations:transformations:1.0.0"
+
+    // Single Live Event
+    implementation "com.github.hadilq:live-event:1.2.3"
 }

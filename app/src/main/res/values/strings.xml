@@ -35,8 +35,14 @@
     <!-- endregion -->
 
     <!-- region Album Detail -->
+    <string name="album_detail_menu_save">Save</string>
+    <string name="album_detail_menu_delete">Delete</string>
     <string name="album_detail_no_tracks">This album has no tracks</string>
     <string name="album_detail_error">This album cannot be found on the server</string>
+    <string name="album_detail_save_success">Album saved</string>
+    <string name="album_detail_save_error">This album could not be saved</string>
+    <string name="album_detail_delete_success">Album deleted</string>
+    <string name="album_detail_delete_error">This album could not be deleted</string>
     <!-- endregion -->
 
     <!-- region Track -->

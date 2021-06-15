@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.ggasbarri.lastfm.ui.album.detail.AlbumDetailConverters"/>
+
+        <import type="com.ggasbarri.lastfm.ui.album.detail.AlbumDetailConverters" />
+
         <import type="android.view.View" />
 
         <variable
@@ -48,6 +50,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="@android:color/transparent"
                     app:layout_collapseMode="pin"
+                    app:menu="@menu/album_detail_menu"
                     app:navigationIcon="@drawable/ic_arrow_back"
                     app:title="@{viewModel.album.data.name}"
                     app:titleCentered="true"

@@ -3,6 +3,7 @@ package com.ggasbarri.lastfm.repository
 import com.ggasbarri.lastfm.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 
 
@@ -20,22 +21,29 @@ abstract class BaseRepository {
     }
 
     inline fun <T> requestWithCache(
-        crossinline cache: suspend () -> T?,
-        crossinline block: suspend () -> T
+        cacheFlow: Flow<T?>,
+        requestFlow: Flow<Resource<T>>,
+        crossinline overrideResponseWithCache: (cachedData: T, responseData: T?) -> T?
     ): Flow<Resource<T>> {
-        var obtainedCache: T? = null
-        return flow {
-            // Notify loading state immediately
-            emit(Resource.loading())
+        return cacheFlow.combine(requestFlow) { cache, response ->
+            when (response.status) {
+                Resource.Status.LOADING -> {
+                    if (cache != null) Resource.loading(cache)
+                    else Resource.loading()
+                }
+                Resource.Status.SUCCESS -> {
+                    if (cache != null)
+                        response.copyWithData(
+                            overrideResponseWithCache(cache, response.data)
+                        )
+                    else response
 
-            // Load cache
-            obtainedCache = cache.invoke()
-            emit(Resource.loading(data = obtainedCache))
-
-            val data = block()
-            emit(Resource.success(data))
-        }.catch {
-            emit(Resource.error(it, data = obtainedCache))
+                }
+                Resource.Status.ERROR -> {
+                    if (cache != null) Resource.error(response.throwable, cache)
+                    else Resource.error(response.throwable)
+                }
+            }
         }
     }
 }
