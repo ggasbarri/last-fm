@@ -7,24 +7,9 @@
     <string name="main_navigation_title_info">Info</string>
     <!-- endregion -->
 
-    <!-- region Artist Search -->
-    <string name="search_artists_edit_text_placeholder">Input an artist name</string>
-    <string name="search_artists_start_text">We will show you the results here :)</string>
-    <string name="search_artists_empty_text">No results for this artist :(</string>
-    <plurals name="search_artists_item_listeners">
-        <item quantity="one">%1$s listener</item>
-        <item quantity="other">%1$s listeners</item>
-    </plurals>
-    <string name="artist_search_artist_not_in_server_error">This artist cannot be found on the server</string>
-    <!-- endregion -->
-
-    <!-- region Artist Detail -->
-    <string name="artist_detail_top_albums_empty">No top albums for this artist</string>
-    <string name="artist_detail_album_not_in_server_error">This album cannot be found on the server</string>
-    <!-- endregion -->
-
     <!-- region Saved Albums -->
     <string name="saved_albums_title">Your saved albums</string>
+    <string name="saved_albums_empty">Tap on &quot;Artists&quot; and start saving some of their albums!</string>
     <!-- endregion -->
 
     <!-- region Album Item -->
@@ -50,6 +35,22 @@
         <item quantity="one">%1$s second</item>
         <item quantity="other">%1$s seconds</item>
     </plurals>
+    <!-- endregion -->
+
+    <!-- region Artist Search -->
+    <string name="search_artists_edit_text_placeholder">Input an artist name</string>
+    <string name="search_artists_start_text">We will show you the results here :)</string>
+    <string name="search_artists_empty_text">No results for this artist :(</string>
+    <plurals name="search_artists_item_listeners">
+        <item quantity="one">%1$s listener</item>
+        <item quantity="other">%1$s listeners</item>
+    </plurals>
+    <string name="artist_search_artist_not_in_server_error">This artist cannot be found on the server</string>
+    <!-- endregion -->
+
+    <!-- region Artist Detail -->
+    <string name="artist_detail_top_albums_empty">No top albums for this artist</string>
+    <string name="artist_detail_album_not_in_server_error">This album cannot be found on the server</string>
     <!-- endregion -->
 
 </resources>

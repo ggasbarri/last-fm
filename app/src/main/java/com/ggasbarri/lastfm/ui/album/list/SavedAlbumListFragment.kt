@@ -5,23 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.memory.MemoryCache
-import com.ggasbarri.lastfm.R
-import com.ggasbarri.lastfm.databinding.ItemArtistSearchResultBinding
 import com.ggasbarri.lastfm.databinding.ItemSavedAlbumBinding
 import com.ggasbarri.lastfm.databinding.SavedAlbumFragmentBinding
-import com.ggasbarri.lastfm.db.models.Album
 import com.ggasbarri.lastfm.db.models.AlbumWithTracks
-import com.ggasbarri.lastfm.db.models.Artist
-import com.ggasbarri.lastfm.ui.artist.search.ArtistSearchFragmentDirections
 import com.ggasbarri.lastfm.util.ItemClickListener
 import com.ggasbarri.lastfm.util.MemoryCacheKey
-import com.ggasbarri.lastfm.util.snackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -56,6 +53,8 @@ class SavedAlbumListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupSavedAlbumsRv()
+
+        handleLoadingSate()
     }
 
     private fun setupSavedAlbumsRv() {
@@ -89,5 +88,14 @@ class SavedAlbumListFragment : Fragment() {
             lifecycleScope.launch { adapter.submitData(albums) }
         })
 
+    }
+
+    private fun handleLoadingSate() {
+        lifecycleScope.launch {
+            adapter.loadStateFlow.collectLatest { loadingState ->
+                binding.savedAlbumsEmptyTv.isVisible =
+                    adapter.itemCount < 1 && loadingState.refresh !is LoadState.Loading
+            }
+        }
     }
 }
