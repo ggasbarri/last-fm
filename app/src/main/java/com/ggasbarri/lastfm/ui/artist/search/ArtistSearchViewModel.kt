@@ -5,6 +5,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.ggasbarri.lastfm.db.models.Artist
 import com.ggasbarri.lastfm.repository.ArtistsRepository
+import com.ggasbarri.lastfm.util.toSingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -23,28 +24,33 @@ class ArtistSearchViewModel @Inject constructor(
             savedStateHandle[SAVED_STATE_ARTIST_QUERY] = value
         }
 
+    private val searchRequested = MutableLiveData<Unit>().toSingleEvent()
     val searchResults =
         savedStateHandle.getLiveData<String>(SAVED_STATE_ARTIST_QUERY).switchMap { artistQuery ->
-            when {
-                artistQuery == null -> {
-                    flow { emit(null) }.asLiveData()
-                }
-                artistQuery.isBlank() -> {
-                    flow { emit(PagingData.empty<Artist>()) }.asLiveData()
-                }
-                else -> {
-                    artistsRepository
-                        .searchArtists(artistQuery)
-                        .distinctUntilChanged()
-                        .debounce(SEARCH_RESULTS_DEBOUNCE_MS)
-                        .cachedIn(viewModelScope)
-                        .asLiveData()
+            searchRequested.switchMap {
+                when {
+                    artistQuery == null -> {
+                        flow { emit(null) }.asLiveData()
+                    }
+                    artistQuery.isBlank() -> {
+                        flow { emit(PagingData.empty<Artist>()) }.asLiveData()
+                    }
+                    else -> {
+                        artistsRepository
+                            .searchArtists(artistQuery)
+                            .distinctUntilChanged()
+                            .cachedIn(viewModelScope)
+                            .asLiveData()
+                    }
                 }
             }
         }
 
+    fun search() {
+        searchRequested.value = Unit
+    }
+
     companion object {
         private const val SAVED_STATE_ARTIST_QUERY = "artist_query"
-        private const val SEARCH_RESULTS_DEBOUNCE_MS = 400L
     }
 }

@@ -37,7 +37,8 @@
                     android:layout_marginStart="0dp"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    app:endIconMode="clear_text"
+                    app:endIconDrawable="@drawable/ic_arrow_forward"
+                    app:endIconMode="custom"
                     app:errorEnabled="false"
                     app:hintEnabled="false"
                     app:placeholderText="@string/search_artists_edit_text_placeholder"
@@ -47,6 +48,7 @@
                         android:id="@+id/searchTextInputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:imeOptions="actionGo"
                         android:inputType="textCapWords"
                         android:maxLines="1"
                         android:paddingTop="8dp"
@@ -67,8 +69,8 @@
             tools:listitem="@layout/item_artist_search_result" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
-            style="@style/Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"
             android:id="@+id/searchProgressBar"
+            style="@style/Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
