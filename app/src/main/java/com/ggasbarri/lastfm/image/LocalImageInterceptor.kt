@@ -5,13 +5,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.content.FileProvider
-import androidx.core.graphics.drawable.toDrawable
-import coil.decode.DataSource
 import coil.intercept.Interceptor
-import coil.memory.MemoryCache
 import coil.request.ErrorResult
 import coil.request.ImageResult
-import coil.request.SuccessResult
 import com.ggasbarri.lastfm.BuildConfig
 import com.ggasbarri.lastfm.db.models.Album
 import com.ggasbarri.lastfm.injection.IoDispatcher
@@ -47,17 +43,12 @@ class LocalImageInterceptor @Inject constructor(
         val filePath: String = imageFile.path
         val bitmap = BitmapFactory.decodeFile(filePath)
 
-        return SuccessResult(
-            drawable = bitmap.toDrawable(context.resources),
-            request = chain.request,
-            metadata = ImageResult.Metadata(
-                memoryCacheKey = MemoryCache.Key(imageFile.name),
-                isSampled = false,
-                dataSource = DataSource.DISK,
-                isPlaceholderMemoryCacheKeyPresent = chain.request.placeholderMemoryCacheKey != null,
-            )
+        return chain.proceed(
+            chain.request
+                .newBuilder(chain.request.context)
+                .data(bitmap)
+                .build()
         )
-
     }
 
     suspend fun saveBitmap(bitmap: Bitmap, fileName: String) {

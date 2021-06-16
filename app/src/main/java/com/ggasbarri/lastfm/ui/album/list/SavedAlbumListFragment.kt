@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.memory.MemoryCache
+import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.ItemSavedAlbumBinding
 import com.ggasbarri.lastfm.databinding.SavedAlbumFragmentBinding
 import com.ggasbarri.lastfm.db.models.AlbumWithTracks
@@ -81,7 +82,10 @@ class SavedAlbumListFragment : Fragment() {
 
             adapter = this@SavedAlbumListFragment.adapter
             layoutManager =
-                GridLayoutManager(requireContext(), 2)
+                GridLayoutManager(
+                    requireContext(),
+                    resources.getInteger(R.integer.saved_albums_span_count)
+                )
         }
 
         viewModel.savedAlbums.observe(viewLifecycleOwner, { albums ->

@@ -8,8 +8,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SavedAlbumListViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
-    private val albumsRepository: AlbumsRepository,
+    albumsRepository: AlbumsRepository,
 ) : ViewModel() {
 
     val savedAlbums = albumsRepository

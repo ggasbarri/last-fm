@@ -83,6 +83,7 @@ class SavedAlbumViewHolder(
 class SavedAlbumDiffCallback : DiffUtil.ItemCallback<AlbumWithTracks>() {
     override fun areItemsTheSame(oldItem: AlbumWithTracks, newItem: AlbumWithTracks): Boolean {
         return oldItem.album.id == newItem.album.id
+                || (oldItem.album.remoteId == newItem.album.remoteId && !oldItem.album.remoteId.isNullOrBlank())
     }
 
     override fun areContentsTheSame(oldItem: AlbumWithTracks, newItem: AlbumWithTracks): Boolean {
