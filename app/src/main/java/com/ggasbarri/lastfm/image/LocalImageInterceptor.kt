@@ -5,7 +5,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.content.FileProvider
+import coil.ImageLoader
 import coil.intercept.Interceptor
+import coil.memory.MemoryCache
 import coil.request.ErrorResult
 import coil.request.ImageResult
 import com.ggasbarri.lastfm.BuildConfig
@@ -47,6 +49,7 @@ class LocalImageInterceptor @Inject constructor(
             chain.request
                 .newBuilder(chain.request.context)
                 .data(bitmap)
+                .memoryCacheKey(MemoryCache.Key(data.id.toString()))
                 .build()
         )
     }
