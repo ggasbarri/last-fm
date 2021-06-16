@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/savedAlbumsFragment">
+
+    <fragment
+        android:id="@+id/savedAlbumsFragment"
+        android:name="com.ggasbarri.lastfm.ui.album.list.SavedAlbumListFragment"
+        android:label="saved_albums_fragment"
+        tools:layout="@layout/saved_album_fragment" >
+        <action
+            android:id="@+id/action_savedAlbumsFragment_to_albumDetailFragment"
+            app:destination="@id/albumDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/artistSearchFragment"
+        android:name="com.ggasbarri.lastfm.ui.artist.search.ArtistSearchFragment"
+        android:label="ArtistSearchFragment"
+        tools:layout="@layout/artist_search_fragment" >
+        <action
+            android:id="@+id/action_artistSearchFragment_to_artistDetailFragment"
+            app:destination="@id/artistDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.ggasbarri.lastfm.ui.info.InfoFragment"
+        android:label="info_fragment"
+        tools:layout="@layout/info_fragment" />
+    <fragment
+        android:id="@+id/artistDetailFragment"
+        android:name="com.ggasbarri.lastfm.ui.artist.detail.ArtistDetailFragment"
+        android:label="artist_detail_fragment"
+        tools:layout="@layout/artist_detail_fragment" >
+        <action
+            android:id="@+id/action_artistDetailFragment_to_albumDetailFragment"
+            app:destination="@id/albumDetailFragment"/>
+        <argument
+            android:name="artist"
+            app:argType="com.ggasbarri.lastfm.db.models.Artist" />
+        <argument
+            android:name="imageCacheKey"
+            app:argType="com.ggasbarri.lastfm.image.MemoryCacheKey" />
+    </fragment>
+    <fragment
+        android:id="@+id/albumDetailFragment"
+        android:name="com.ggasbarri.lastfm.ui.album.detail.AlbumDetailFragment"
+        android:label="album_detail_fragment"
+        tools:layout="@layout/album_detail_fragment" >
+        <argument
+            android:name="remoteId"
+            app:argType="string" />
+        <argument
+            android:name="memoryCacheKey"
+            app:argType="com.ggasbarri.lastfm.image.MemoryCacheKey" />
+    </fragment>
+</navigation>
