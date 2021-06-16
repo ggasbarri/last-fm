@@ -29,7 +29,7 @@ class SavedAlbumListFragment : Fragment() {
         fun newInstance() = SavedAlbumListFragment()
     }
 
-    private val listViewModel: SavedAlbumListViewModel by viewModels()
+    private val viewModel: SavedAlbumListViewModel by viewModels()
 
     @Inject
     lateinit var adapter: SavedAlbumAdapter
@@ -43,7 +43,7 @@ class SavedAlbumListFragment : Fragment() {
         binding =
             SavedAlbumFragmentBinding.inflate(inflater, container, false).apply {
                 lifecycleOwner = this@SavedAlbumListFragment.viewLifecycleOwner
-                viewModel = this@SavedAlbumListFragment.listViewModel
+                viewModel = this@SavedAlbumListFragment.viewModel
             }
 
         return binding.root
@@ -84,7 +84,7 @@ class SavedAlbumListFragment : Fragment() {
                 GridLayoutManager(requireContext(), 2)
         }
 
-        listViewModel.savedAlbums.observe(viewLifecycleOwner, { albums ->
+        viewModel.savedAlbums.observe(viewLifecycleOwner, { albums ->
             lifecycleScope.launch { adapter.submitData(albums) }
         })
 

@@ -1,7 +1,9 @@
 package com.ggasbarri.lastfm.ui.info
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class InfoViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+@HiltViewModel
+class InfoViewModel @Inject constructor() : ViewModel() {
 }

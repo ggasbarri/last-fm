@@ -121,6 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="240dp"
             android:paddingTop="24dp"
+            android:autoLink="all"
             android:text="@string/album_detail_error"
             android:textAlignment="center"
             android:visibility="@{viewModel.album.hasError &amp;&amp; viewModel.album.data == null ? View.VISIBLE : View.GONE, default=gone}" />

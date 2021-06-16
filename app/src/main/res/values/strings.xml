@@ -46,12 +46,23 @@
         <item quantity="one">%1$s listener</item>
         <item quantity="other">%1$s listeners</item>
     </plurals>
-    <string name="artist_search_artist_not_in_server_error">Error obtaining this artist from the server</string>
+    <string name="artist_search_artist_not_in_server_error">No data available for this artist</string>
     <!-- endregion -->
 
     <!-- region Artist Detail -->
-    <string name="artist_detail_top_albums_empty">No top albums for this artist</string>
-    <string name="artist_detail_album_not_in_server_error">@string/album_detail_error</string>
+    <string name="artist_detail_top_albums_empty">No top albums available for this artist</string>
+    <string name="artist_detail_album_not_in_server_error">No data available for this album</string>
+    <!-- endregion -->
+
+    <!-- region Info -->
+    <string name="info_title">Important remarks</string>
+    <string name="info_description">All the data, information, images and this app\'s logo
+    were all obtained from whether Last FM\'s site (last.fm) or API.\n\nFor more information
+    regarding this data and its usage, please consult Last FM\'s Terms of Service at
+    https://www.last.fm/api/tos\n\n\nOn the other hand, Last FM has disabled the Artist images on the
+    API as discussed here: https://support.last.fm/t/cant-get-an-image-via-api/16571\n\nOn the app,
+    I left the Artist image logic for demonstrative purposes but Artist images will only display a
+    placeholder with a star.\n\n\nAlso, don\'t forget to check the app\'s Dark Mode out :)</string>
     <!-- endregion -->
 
 </resources>
