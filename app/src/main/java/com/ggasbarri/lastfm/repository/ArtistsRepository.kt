@@ -30,7 +30,6 @@ class ArtistsRepository @Inject constructor(
             pagingSourceFactory = {
                 ArtistSearchPagingSourceFactory(lastFmDatasource, artist, limit)
             }).flow
-            //.debounce(SEARCH_DEBOUNCE_MS)
             .flowOn(dispatcher)
     }
 
@@ -49,5 +48,3 @@ class ArtistsRepository @Inject constructor(
             .flowOn(dispatcher)
     }
 }
-
-private const val SEARCH_DEBOUNCE_MS = 2000L

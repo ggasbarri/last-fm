@@ -1,6 +1,6 @@
 package com.ggasbarri.lastfm.util
 
-class Resource<T>(
+data class Resource<T>(
     val status: Status,
     val data: T?,
     val throwable: Throwable? = null
@@ -13,6 +13,12 @@ class Resource<T>(
         get() = status == Status.LOADING
     val hasError: Boolean
         get() = status == Status.ERROR
+
+    fun <R> copyWithData(data: R?): Resource<R> = Resource(
+        status = this.status,
+        data = data,
+        throwable = this.throwable
+    )
 
     companion object {
         fun <T> success(data: T?): Resource<T> =

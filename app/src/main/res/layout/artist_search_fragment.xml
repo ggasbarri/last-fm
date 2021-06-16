@@ -1,21 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
-            type="com.ggasbarri.lastfm.ui.search.ArtistSearchViewModel" />
+            type="com.ggasbarri.lastfm.ui.artist.search.ArtistSearchViewModel" />
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.album.saved.SavedAlbumFragment">
+        tools:context=".ui.album.list.SavedAlbumListFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liftOnScroll="true">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                style="@style/Widget.MaterialComponents.Toolbar.Surface"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:contentInsetStart="0dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/searchTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    app:endIconDrawable="@drawable/ic_arrow_forward"
+                    app:endIconMode="custom"
+                    app:errorEnabled="false"
+                    app:hintEnabled="false"
+                    app:placeholderText="@string/search_artists_edit_text_placeholder"
+                    app:startIconDrawable="@drawable/ic_search">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/searchTextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionGo"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingTop="8dp"
+                        android:text="@={viewModel.artistQuery}"
+                        tools:text="@string/search_artists_edit_text_placeholder" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/artistSearchRv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/item_artist_search_result" />
 
-    </FrameLayout>
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/searchProgressBar"
+            style="@style/Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:indeterminate="true"
+            android:paddingTop="4dp"
+            android:visibility="visible" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/searchEmptyTv"
+            style="@style/TextAppearance.MaterialComponents.Headline4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="24dp"
+            android:textAlignment="center"
+            tools:text="@string/search_artists_empty_text"
+            tools:visibility="visible" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

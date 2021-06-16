@@ -8,12 +8,12 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "albums")
 @Parcelize
 data class Album(
-    val remoteId: String,
+    val remoteId: String? = null,
     val name: String,
     val artist: String,
     val url: String,
-    val smallImageUrl: String? = null,
-    val largeImageUrl: String? = null,
+    val playCount: Int,
+    val imageUrl: String? = null,
     val publishDateMs: Long? = null,
     val shortDescription: String? = null,
     val longDescription: String? = null,

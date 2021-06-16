@@ -23,7 +23,7 @@ data class TopAlbumsResponse(
             @Json(name = "image")
             val images: List<Image>,
             @Json(name = "mbid")
-            val mbid: String,
+            val mbid: String? = null,
             @Json(name = "name")
             val name: String,
             @Json(name = "playcount")

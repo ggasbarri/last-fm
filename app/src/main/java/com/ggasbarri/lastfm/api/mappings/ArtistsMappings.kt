@@ -8,9 +8,8 @@ fun ArtistSearchResponse.Results.ArtistMatches.Artist.toAppModel(): Artist {
         remoteId = mbid,
         name = name,
         url = url,
-        smallImageUrl = images.firstOrNull { it.size == "small" }?.url,
-        largeImageUrl = images.firstOrNull { it.size == "large" }?.url,
-        totalListeners = try { this.listeners.toLong() } catch (e: Throwable) { null },
+        imageUrl = images.firstOrNull { it.size == "large" }?.url ?: images.firstOrNull()?.url,
+        totalListeners = try { this.listeners.toInt() } catch (e: Throwable) { null },
     )
 }
 

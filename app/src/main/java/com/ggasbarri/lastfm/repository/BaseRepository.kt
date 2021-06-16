@@ -1,45 +1,48 @@
 package com.ggasbarri.lastfm.repository
 
 import com.ggasbarri.lastfm.util.Resource
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 
 
 abstract class BaseRepository {
-    suspend inline fun <T> request(
+    inline fun <T> request(
         initialData: T? = null,
         crossinline block: suspend () -> T
     ): Flow<Resource<T>> {
         return flow {
             emit(Resource.loading(data = initialData))
-
-            try {
-                val data = block()
-                emit(Resource.success(data))
-            } catch (throwable: Throwable) {
-                emit(Resource.error(throwable, data = initialData))
-            }
+            emit(Resource.success(block()))
+        }.catch {
+            emit(Resource.error(it, data = initialData))
         }
     }
 
-    suspend inline fun <T> requestWithCache(
-        crossinline cache: suspend () -> T?,
-        crossinline block: suspend () -> T
-    ): Flow<Resource<T>> {
-        return flow {
-            // Notify loading state immediately
-            emit(Resource.loading<T>())
+    inline fun <T> requestWithCache(
+        cacheFlow: Flow<T?>,
+        requestFlow: Flow<Resource<T>>,
+        crossinline overrideResponseWithCache: (cachedData: T, responseData: T?) -> T?
+    ): Flow<Resource<out T>> {
+        return cacheFlow.combine(requestFlow) { cache, response ->
+            when (response.status) {
+                Resource.Status.LOADING -> {
+                    if (cache != null) Resource.loading(cache)
+                    else Resource.loading()
+                }
+                Resource.Status.SUCCESS -> {
+                    if (cache != null)
+                        response.copyWithData(
+                            overrideResponseWithCache(cache, response.data)
+                        )
+                    else response
 
-            // Load cache
-            val cachedData = cache.invoke()
-            emit(Resource.loading(data = cachedData))
-
-            try {
-                val data = block()
-                emit(Resource.success(data))
-            } catch (throwable: Throwable) {
-                emit(Resource.error(throwable, data = cachedData))
+                }
+                Resource.Status.ERROR -> {
+                    if (cache != null) Resource.error(response.throwable, cache)
+                    else Resource.error(response.throwable)
+                }
             }
+        }.onStart {
+            emit(Resource.loading())
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.ggasbarri.lastfm.api.mappings
 
 import com.ggasbarri.lastfm.api.models.AlbumInfoResponse
-
 import com.ggasbarri.lastfm.db.models.Track
 
 
