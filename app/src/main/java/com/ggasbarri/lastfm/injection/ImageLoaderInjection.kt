@@ -3,11 +3,14 @@ package com.ggasbarri.lastfm.injection
 import android.content.Context
 import coil.ImageLoader
 import coil.util.CoilUtils
+import com.ggasbarri.lastfm.image.AlbumCoilMapper
+import com.ggasbarri.lastfm.image.LocalImageInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -16,10 +19,18 @@ import javax.inject.Singleton
 object ImageLoaderInjection {
     @Provides
     @Singleton
-    fun provideImageLoader(@ApplicationContext applicationContext: Context): ImageLoader {
+    fun provideImageLoader(
+        @ApplicationContext applicationContext: Context,
+        localImageInterceptor: LocalImageInterceptor,
+        albumCoilMapper: AlbumCoilMapper,
+    ): ImageLoader {
         return ImageLoader.Builder(applicationContext)
             .crossfade(true)
             .allowHardware(false)
+            .componentRegistry {
+                add(localImageInterceptor)
+                add(albumCoilMapper)
+            }
             .build()
     }
 }

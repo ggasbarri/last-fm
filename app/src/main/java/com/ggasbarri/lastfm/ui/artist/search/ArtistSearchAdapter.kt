@@ -53,8 +53,8 @@ class SavedArtistViewHolder(
 
             val imageRequest = ImageRequest.Builder(binding.root.context)
                 .data(
-                    if (artist.smallImageUrl.isNullOrBlank()) R.drawable.ic_question_mark
-                    else artist.smallImageUrl
+                    if (artist.imageUrl.isNullOrBlank()) R.drawable.ic_question_mark
+                    else artist.imageUrl
                 )
                 .target(binding.artistIv)
                 .fallback(R.drawable.ic_question_mark)

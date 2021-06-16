@@ -13,7 +13,7 @@ import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.ItemSavedAlbumBinding
 import com.ggasbarri.lastfm.db.models.AlbumWithTracks
 import com.ggasbarri.lastfm.util.ItemClickListener
-import com.ggasbarri.lastfm.util.MemoryCacheKey
+import com.ggasbarri.lastfm.image.MemoryCacheKey
 import javax.inject.Inject
 
 class SavedAlbumAdapter @Inject constructor(
@@ -56,8 +56,8 @@ class SavedAlbumViewHolder(
 
             val imageRequest = ImageRequest.Builder(binding.root.context)
                 .data(
-                    if (albumWithTracks.album.smallImageUrl.isNullOrBlank()) R.drawable.ic_question_mark
-                    else albumWithTracks.album.smallImageUrl
+                    if (albumWithTracks.album.imageUrl.isNullOrBlank()) R.drawable.ic_question_mark
+                    else albumWithTracks.album
                 )
                 .target(binding.albumIv)
                 .fallback(R.drawable.ic_question_mark)

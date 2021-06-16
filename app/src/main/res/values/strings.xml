@@ -22,8 +22,9 @@
     <!-- region Album Detail -->
     <string name="album_detail_menu_save">Save</string>
     <string name="album_detail_menu_delete">Delete</string>
+    <string name="album_detail_no_description">&lt;No description></string>
     <string name="album_detail_no_tracks">This album has no tracks</string>
-    <string name="album_detail_error">This album cannot be found on the server</string>
+    <string name="album_detail_error">Error obtaining this album from the server</string>
     <string name="album_detail_save_success">Album saved</string>
     <string name="album_detail_save_error">This album could not be saved</string>
     <string name="album_detail_delete_success">Album deleted</string>
@@ -45,12 +46,12 @@
         <item quantity="one">%1$s listener</item>
         <item quantity="other">%1$s listeners</item>
     </plurals>
-    <string name="artist_search_artist_not_in_server_error">This artist cannot be found on the server</string>
+    <string name="artist_search_artist_not_in_server_error">Error obtaining this artist from the server</string>
     <!-- endregion -->
 
     <!-- region Artist Detail -->
     <string name="artist_detail_top_albums_empty">No top albums for this artist</string>
-    <string name="artist_detail_album_not_in_server_error">This album cannot be found on the server</string>
+    <string name="artist_detail_album_not_in_server_error">@string/album_detail_error</string>
     <!-- endregion -->
 
 </resources>

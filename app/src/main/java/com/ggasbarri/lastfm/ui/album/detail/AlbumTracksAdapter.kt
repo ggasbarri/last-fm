@@ -52,6 +52,10 @@ class TrackDiffCallback : DiffUtil.ItemCallback<Track>() {
     }
 
     override fun areContentsTheSame(oldItem: Track, newItem: Track): Boolean {
-        return oldItem == newItem
+        return oldItem.name == newItem.name &&
+                oldItem.artist == newItem.artist &&
+                oldItem.durationSeconds == newItem.durationSeconds &&
+                oldItem.rank == newItem.rank
+
     }
 }

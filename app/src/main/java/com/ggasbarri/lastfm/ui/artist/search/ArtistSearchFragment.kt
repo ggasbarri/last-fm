@@ -21,7 +21,7 @@ import com.ggasbarri.lastfm.databinding.ArtistSearchFragmentBinding
 import com.ggasbarri.lastfm.databinding.ItemArtistSearchResultBinding
 import com.ggasbarri.lastfm.db.models.Artist
 import com.ggasbarri.lastfm.util.ItemClickListener
-import com.ggasbarri.lastfm.util.MemoryCacheKey
+import com.ggasbarri.lastfm.image.MemoryCacheKey
 import com.ggasbarri.lastfm.util.snackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

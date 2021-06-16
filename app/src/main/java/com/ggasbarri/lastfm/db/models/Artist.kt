@@ -11,8 +11,7 @@ data class Artist(
     val remoteId: String,
     val name: String,
     val url: String,
-    val smallImageUrl: String? = null,
-    val largeImageUrl: String? = null,
+    val imageUrl: String? = null,
     val totalListeners: Int? = null,
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
 ) : Parcelable

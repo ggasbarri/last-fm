@@ -1,4 +1,4 @@
-package com.ggasbarri.lastfm.util
+package com.ggasbarri.lastfm.image
 
 import android.os.Parcelable
 import coil.memory.MemoryCache

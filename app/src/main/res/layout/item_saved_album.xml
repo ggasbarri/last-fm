@@ -11,7 +11,7 @@
 
         <variable
             name="memoryCacheKey"
-            type="com.ggasbarri.lastfm.util.MemoryCacheKey" />
+            type="com.ggasbarri.lastfm.image.MemoryCacheKey" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

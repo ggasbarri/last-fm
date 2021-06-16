@@ -13,7 +13,7 @@ import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.ItemTopAlbumBinding
 import com.ggasbarri.lastfm.db.models.Album
 import com.ggasbarri.lastfm.util.ItemClickListener
-import com.ggasbarri.lastfm.util.MemoryCacheKey
+import com.ggasbarri.lastfm.image.MemoryCacheKey
 import javax.inject.Inject
 
 class TopAlbumsAdapter @Inject constructor(
@@ -55,8 +55,8 @@ class TopAlbumViewHolder(
 
             val imageRequest = ImageRequest.Builder(binding.root.context)
                 .data(
-                    if (album.smallImageUrl.isNullOrBlank()) R.drawable.ic_question_mark
-                    else album.smallImageUrl
+                    if (album.imageUrl.isNullOrBlank()) R.drawable.ic_question_mark
+                    else album.imageUrl
                 )
                 .target(binding.artistIv)
                 .fallback(R.drawable.ic_question_mark)

@@ -42,7 +42,7 @@
             app:argType="com.ggasbarri.lastfm.db.models.Artist" />
         <argument
             android:name="imageCacheKey"
-            app:argType="com.ggasbarri.lastfm.util.MemoryCacheKey" />
+            app:argType="com.ggasbarri.lastfm.image.MemoryCacheKey" />
     </fragment>
     <fragment
         android:id="@+id/albumDetailFragment"
@@ -54,6 +54,6 @@
             app:argType="string" />
         <argument
             android:name="memoryCacheKey"
-            app:argType="com.ggasbarri.lastfm.util.MemoryCacheKey" />
+            app:argType="com.ggasbarri.lastfm.image.MemoryCacheKey" />
     </fragment>
 </navigation>

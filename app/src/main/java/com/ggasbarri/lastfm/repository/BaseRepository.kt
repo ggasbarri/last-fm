@@ -1,10 +1,7 @@
 package com.ggasbarri.lastfm.repository
 
 import com.ggasbarri.lastfm.util.Resource
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 
 
 abstract class BaseRepository {
@@ -24,7 +21,7 @@ abstract class BaseRepository {
         cacheFlow: Flow<T?>,
         requestFlow: Flow<Resource<T>>,
         crossinline overrideResponseWithCache: (cachedData: T, responseData: T?) -> T?
-    ): Flow<Resource<T>> {
+    ): Flow<Resource<out T>> {
         return cacheFlow.combine(requestFlow) { cache, response ->
             when (response.status) {
                 Resource.Status.LOADING -> {
@@ -44,6 +41,8 @@ abstract class BaseRepository {
                     else Resource.error(response.throwable)
                 }
             }
+        }.onStart {
+            emit(Resource.loading())
         }
     }
 }

@@ -28,19 +28,20 @@ data class AlbumInfoResponse(
         @Json(name = "playcount")
         val playcount: String,
         @Json(name = "tags")
-        val tagsObj: Tags,
+        val tagsObj: Tags? = null,
         @Json(name = "tracks")
-        val tracksObj: Tracks,
+        val tracksObj: Tracks? = null,
         @Json(name = "url")
         val url: String,
         @Json(name = "wiki")
-        val wiki: Wiki
+        val wiki: Wiki? = null
     ) {
 
         //region Utility
 
-        fun formattedPublishDate() =
+        fun formattedPublishDate() = wiki?.let { wiki ->
             SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.US).parse(wiki.published)?.time
+        }
 
         //endregion
 

@@ -15,20 +15,16 @@ import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.memory.MemoryCache
 import coil.request.ImageRequest
 import com.commit451.coiltransformations.ColorFilterTransformation
 import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.ArtistDetailFragmentBinding
-import com.ggasbarri.lastfm.databinding.ItemArtistSearchResultBinding
 import com.ggasbarri.lastfm.databinding.ItemTopAlbumBinding
 import com.ggasbarri.lastfm.db.models.Album
-import com.ggasbarri.lastfm.db.models.Artist
-import com.ggasbarri.lastfm.ui.artist.search.ArtistSearchFragmentDirections
 import com.ggasbarri.lastfm.util.ItemClickListener
-import com.ggasbarri.lastfm.util.MemoryCacheKey
+import com.ggasbarri.lastfm.image.MemoryCacheKey
 import com.ggasbarri.lastfm.util.snackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -85,7 +81,7 @@ class ArtistDetailFragment : Fragment() {
     private fun loadArtistImage(parameters: ArtistDetailFragmentArgs) {
         viewModel.artist?.let { artist ->
             val imageRequest = ImageRequest.Builder(binding.root.context)
-                .data(artist.largeImageUrl)
+                .data(artist.imageUrl)
                 .target(binding.artistDetailIv)
                 .fallback(R.drawable.ic_question_mark)
                 .placeholderMemoryCacheKey(parameters.imageCacheKey.memoryCacheKey)

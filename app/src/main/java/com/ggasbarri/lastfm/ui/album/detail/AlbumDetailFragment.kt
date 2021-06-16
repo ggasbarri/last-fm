@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.view.menu.MenuPresenter
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -21,7 +19,7 @@ import coil.request.ImageRequest
 import com.commit451.coiltransformations.ColorFilterTransformation
 import com.ggasbarri.lastfm.R
 import com.ggasbarri.lastfm.databinding.AlbumDetailFragmentBinding
-import com.ggasbarri.lastfm.util.MemoryCacheKey
+import com.ggasbarri.lastfm.image.MemoryCacheKey
 import com.ggasbarri.lastfm.util.snackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -83,7 +81,7 @@ class AlbumDetailFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menuSave -> {
-                    viewModel.saveAlbum().observe(viewLifecycleOwner, {
+                    viewModel.saveAlbum(requireContext()).observe(viewLifecycleOwner, {
                         if (it.isSuccessful)
                             binding.rootLayout.snackBar(
                                 R.string.album_detail_save_success
@@ -122,26 +120,50 @@ class AlbumDetailFragment : Fragment() {
     private fun loadAlbumImage(memoryCacheKey: MemoryCacheKey) {
 
         val bitmap: Bitmap? = imageLoader.memoryCache[memoryCacheKey.memoryCacheKey]
-        val imageRequest = ImageRequest.Builder(binding.root.context)
-            .data(bitmap)
-            .target(binding.albumDetailIv)
-            .fallback(R.drawable.ic_question_mark)
-            .transformations(
-                ColorFilterTransformation(
-                    color = ResourcesCompat.getColor(
-                        resources, R.color.image_color_filter, requireContext().theme
+
+        if(bitmap == null) {
+            // If image not in memory, load it normally
+            viewModel.album.observe(viewLifecycleOwner, {
+                it?.data?.let { album ->
+                    val imageRequest = ImageRequest.Builder(binding.root.context)
+                        .data(album)
+                        .target(binding.albumDetailIv)
+                        .fallback(R.drawable.ic_question_mark)
+                        .transformations(
+                            ColorFilterTransformation(
+                                color = ResourcesCompat.getColor(
+                                    resources, R.color.image_color_filter, requireContext().theme
+                                )
+                            )
+                        )
+                        .build()
+
+                    imageLoader.enqueue(imageRequest)
+                }
+            })
+        } else {
+            // If we have bitmap in memory, load it directly
+            val imageRequest = ImageRequest.Builder(binding.root.context)
+                .data(bitmap)
+                .target(binding.albumDetailIv)
+                .fallback(R.drawable.ic_question_mark)
+                .transformations(
+                    ColorFilterTransformation(
+                        color = ResourcesCompat.getColor(
+                            resources, R.color.image_color_filter, requireContext().theme
+                        )
                     )
                 )
-            )
-            .build()
+                .build()
 
-        imageLoader.enqueue(imageRequest)
+            imageLoader.enqueue(imageRequest)
+        }
     }
 
     private fun setupTracksRecyclerView() {
 
-        viewModel.tracks.observe(viewLifecycleOwner, { topAlbums ->
-            lifecycleScope.launch { topAlbums?.data?.let { adapter.submitList(it) } }
+        viewModel.tracks.observe(viewLifecycleOwner, { tracks ->
+            lifecycleScope.launch { tracks?.data?.let { adapter.submitList(it) } }
         })
 
         binding.tracksRv.apply {

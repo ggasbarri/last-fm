@@ -1,9 +1,12 @@
 package com.ggasbarri.lastfm.ui.album.detail
 
+import android.content.Context
 import androidx.lifecycle.*
+import com.ggasbarri.lastfm.db.models.AlbumWithTracks
 import com.ggasbarri.lastfm.repository.AlbumsRepository
 import com.ggasbarri.lastfm.util.Resource
 import com.ggasbarri.lastfm.util.toSingleEvent
+import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -48,11 +51,11 @@ class AlbumDetailViewModel @Inject constructor(
             it?.copyWithData(it.data?.tracks)
         }
 
-    fun saveAlbum() = flow<Resource<Long>> {
+    fun saveAlbum(context: Context) = flow<Resource<Long>> {
         val albumWithTracks = albumWithTracks.value?.data
         if (albumWithTracks == null) emit(Resource.error(null))
         else {
-            val dbFlow = albumsRepository.saveAlbum(albumWithTracks)
+            val dbFlow = albumsRepository.saveAlbum(albumWithTracks, context)
                 .map { newId -> Resource.success(newId) }
                 .catch { throwable -> Resource.error<Long>(throwable) }
 
