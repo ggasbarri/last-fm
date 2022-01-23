@@ -4,37 +4,34 @@ import androidx.lifecycle.*
 import androidx.paging.cachedIn
 import com.ggasbarri.lastfm.db.models.Artist
 import com.ggasbarri.lastfm.repository.ArtistsRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.*
 
-@HiltViewModel
-class ArtistDetailViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
-    private val artistsRepository: ArtistsRepository,
+class ArtistDetailViewModel @AssistedInject constructor(
+    artistsRepository: ArtistsRepository,
+    @Assisted artist: Artist,
 ) : ViewModel() {
+    val topAlbums = artistsRepository
+        .getTopSavedAlbums(artist.remoteId)
+        .distinctUntilChanged()
+        .cachedIn(viewModelScope)
+        .shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    var artist: Artist?
-        get() = savedStateHandle[SAVED_STATE_ARTIST]
-        set(value) {
-            savedStateHandle[SAVED_STATE_ARTIST] = value
-        }
-
-    val topAlbums =
-        savedStateHandle.getLiveData<Artist>(SAVED_STATE_ARTIST).switchMap { artist ->
-            if (artist == null) {
-                flow { emit(null) }.asLiveData()
-            } else {
-                artistsRepository
-                    .getTopSavedAlbums(artist.remoteId)
-                    .distinctUntilChanged()
-                    .cachedIn(viewModelScope)
-                    .asLiveData()
-            }
-        }
+    @AssistedFactory
+    interface ArtistDetailViewModelFactory {
+        fun create(artist: Artist): ArtistDetailViewModel
+    }
 
     companion object {
-        private const val SAVED_STATE_ARTIST = "artist"
+        fun provideFactory(
+            assistedFactory: ArtistDetailViewModelFactory,
+            artist: Artist
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return assistedFactory.create(artist) as T
+            }
+        }
     }
 }

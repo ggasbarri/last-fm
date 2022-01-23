@@ -47,7 +47,6 @@
                     android:background="@android:color/transparent"
                     app:layout_collapseMode="pin"
                     app:navigationIcon="@drawable/ic_arrow_back"
-                    app:title="@{viewModel.artist.name}"
                     app:titleCentered="true"
                     tools:title="Cher" />
 
