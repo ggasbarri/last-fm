@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -38,7 +40,13 @@ class ArtistDetailFragment : Fragment() {
         fun newInstance() = ArtistDetailFragment()
     }
 
-    private val viewModel: ArtistDetailViewModel by viewModels()
+    private val parameters by navArgs<ArtistDetailFragmentArgs>()
+
+    @Inject
+    lateinit var assistedFactory: ArtistDetailViewModel.ArtistDetailViewModelFactory
+    private val viewModel: ArtistDetailViewModel by viewModels {
+        ArtistDetailViewModel.provideFactory(assistedFactory, parameters.artist)
+    }
     private lateinit var binding: ArtistDetailFragmentBinding
 
     @Inject
@@ -63,12 +71,12 @@ class ArtistDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val parameters by navArgs<ArtistDetailFragmentArgs>()
-        viewModel.artist = parameters.artist
-
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        // Set page title
+        binding.toolbar.title = parameters.artist.name
 
         setupTopAlbumsRecyclerView()
 
@@ -79,7 +87,7 @@ class ArtistDetailFragment : Fragment() {
     }
 
     private fun loadArtistImage(parameters: ArtistDetailFragmentArgs) {
-        viewModel.artist?.let { artist ->
+        parameters.artist.let { artist ->
             val imageRequest = ImageRequest.Builder(binding.root.context)
                 .data(artist.imageUrl)
                 .target(binding.artistDetailIv)
@@ -100,9 +108,13 @@ class ArtistDetailFragment : Fragment() {
 
     private fun setupTopAlbumsRecyclerView() {
 
-        viewModel.topAlbums.observe(viewLifecycleOwner, { topAlbums ->
-            lifecycleScope.launch { topAlbums?.let { adapter.submitData(it) } }
-        })
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.topAlbums.collectLatest {
+                    adapter.submitData(it)
+                }
+            }
+        }
 
         binding.topAlbumsRv.apply {
             this@ArtistDetailFragment.adapter.onItemClickListener =
